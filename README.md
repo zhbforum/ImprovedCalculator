@@ -93,7 +93,7 @@ How to run the project
 API Integrations
 
 1. **Judge0 API**
-   - URL: [https://judge0-ce.p.rapidapi.com](https://judge0-ce.p.rapidapi.com)
+   - URL: [https://rapidapi.com/judge0-official/api/judge0-ce](https://rapidapi.com/judge0-official/api/judge0-ce)
    - Purpose: Compiles and runs programs in multiple languages.
 
 2. **CoinMarketCap API**
