@@ -79,8 +79,7 @@ Perform advanced calculations, including trigonometric, logarithmic, and exponen
 
 2. **Install Dependencies**
    ```bash
-   cd multi-functional-calculator
-   npm install
+   npm i
    ```
 
 3. **Run the Development Server**
