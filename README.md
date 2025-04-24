@@ -13,8 +13,6 @@ The **Improved Calculator** is a powerful web-based application designed to perf
 ![LucideReact](https://img.shields.io/badge/-LucideReact-FF9E0F?logo=lucide&logoColor=white&style=flat)
 ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white&style=flat)
 ![Radix UI](https://img.shields.io/badge/-Radix_UI-8B5CF6?logo=radix-ui&logoColor=white&style=flat)
-![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white&style=flat)
-![Express.js](https://img.shields.io/badge/-Express.js-000000?logo=express&logoColor=white&style=flat)
 ![Chart.js](https://img.shields.io/badge/-Chart.js-FF6384?logo=chartdotjs&logoColor=white&style=flat)
 ![Axios](https://img.shields.io/badge/-Axios-5A29E4?logo=axios&logoColor=white&style=flat)
 ---
@@ -63,7 +61,6 @@ Perform advanced calculations, including trigonometric, logarithmic, and exponen
 - **p5.js** for advanced 2D drawing
 - **Radix UI** for enhanced accessibility and UI components
 
-- **Node.js** with **Express.js**
 - **Judge0 API** for code compilation
 - **CoinMarketCap API** for cryptocurrency data
 ---
