@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 const Matrix = () => {
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto p-4">
         <MatrixCalculator />
