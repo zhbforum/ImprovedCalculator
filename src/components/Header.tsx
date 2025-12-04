@@ -15,11 +15,12 @@ import {
   ChartCandlestick,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 
 const Header = () => {
   return (
     <header className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+      <div className="container flex h-14 items-center justify-between gap-4">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -38,6 +39,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/engineering"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -50,6 +52,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/graph"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -62,6 +65,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/finance"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -74,6 +78,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/matrix"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -86,6 +91,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/programming"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -98,6 +104,7 @@ const Header = () => {
                       </div>
                     </div>
                   </Link>
+
                   <Link
                     to="/crypto"
                     className="flex items-center gap-2 p-2 hover:bg-accent rounded-md transition-colors"
@@ -115,6 +122,8 @@ const Header = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+
+        <ThemeSwitcher />
       </div>
     </header>
   );
