@@ -76,9 +76,15 @@ const FunctionsList = ({
 
       <div className="space-y-2">
         {functions.map((func, index) => (
-          <div key={index} className="flex flex-col gap-2 p-3 bg-white rounded-lg shadow-sm">
+          <div
+            key={index}
+            className="flex flex-col gap-2 rounded-lg border bg-card p-3 shadow-sm"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium truncate flex-1" title={func.expression}>
+              <span
+                className="flex-1 truncate text-sm font-medium"
+                title={func.expression}
+              >
                 {func.expression}
               </span>
               <Button
@@ -87,14 +93,22 @@ const FunctionsList = ({
                 onClick={() => handleToggleVisibility(index)}
                 className="ml-2"
               >
-                {func.visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                {func.visible ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeOff className="h-4 w-4" />
+                )}
               </Button>
             </div>
-            
+
             <div className="flex gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex-1" style={{ color: func.color }}>
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    style={{ color: func.color }}
+                  >
                     Color
                   </Button>
                 </DropdownMenuTrigger>
@@ -106,7 +120,7 @@ const FunctionsList = ({
                     >
                       <div className="flex items-center gap-2">
                         <div
-                          className="w-4 h-4 rounded-full"
+                          className="h-4 w-4 rounded-full"
                           style={{ backgroundColor: color.value }}
                         />
                         {color.name}
@@ -115,7 +129,7 @@ const FunctionsList = ({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex-1">
@@ -133,7 +147,7 @@ const FunctionsList = ({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              
+
               <Button
                 variant="destructive"
                 size="icon"

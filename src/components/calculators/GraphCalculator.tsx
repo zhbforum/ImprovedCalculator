@@ -36,7 +36,7 @@ const GraphCalculator = () => {
 
   const handleAddFunction = () => {
     if (!currentExpression) return;
-    
+
     setFunctions([
       ...functions,
       {
@@ -67,15 +67,15 @@ const GraphCalculator = () => {
 
   const handleToggleVisibility = (index: number) => {
     const newFunctions = [...functions];
-    newFunctions[index] = { 
-      ...newFunctions[index], 
-      visible: !newFunctions[index].visible 
+    newFunctions[index] = {
+      ...newFunctions[index],
+      visible: !newFunctions[index].visible,
     };
     setFunctions(newFunctions);
   };
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen p-4 bg-gradient-to-br from-background to-muted">
       <Card className="w-full max-w-6xl mx-auto p-8 shadow-xl">
         <div className="space-y-6">
           <div className="space-y-2">
@@ -83,8 +83,10 @@ const GraphCalculator = () => {
               Graphing calculator
             </h1>
             <p className="text-sm text-gray-500">
-              Enter mathematical functions to create graphs. Trigonometric functions are supported (sin, cos, tan), 
-              exponents (e^x), logarithms (log, ln), powers (x^2) and other mathematical expressions.
+              Enter mathematical functions to create graphs. Trigonometric
+              functions are supported (sin, cos, tan), exponents (e^x),
+              logarithms (log, ln), powers (x^2) and other mathematical
+              expressions.
             </p>
           </div>
 
@@ -107,9 +109,9 @@ const GraphCalculator = () => {
                 setShowAxis={setShowAxis}
               />
             </div>
-            
+
             <div className="lg:col-span-3">
-              <GraphCanvas 
+              <GraphCanvas
                 functions={functions}
                 scale={scale}
                 setScale={setScale}
