@@ -143,7 +143,7 @@ const EngineeringCalculator = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-muted p-4">
       <Card className="w-full max-w-4xl p-8 shadow-lg transition-shadow duration-300 hover:shadow-xl">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr,300px]">
           <div className="space-y-6">
