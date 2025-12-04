@@ -166,9 +166,11 @@ const EngineeringCalculator = () => {
                 className="h-12 text-lg font-medium"
               />
 
-              <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
-                <div className="mb-1 text-sm text-gray-600">Result:</div>
-                <div className="text-3xl font-bold text-blue-600">
+              <div className="rounded-xl border bg-card p-4">
+                <div className="mb-1 text-sm text-muted-foreground">
+                  Result:
+                </div>
+                <div className="text-3xl font-bold text-primary">
                   {result || "0"}
                 </div>
               </div>
@@ -271,13 +273,15 @@ const EngineeringCalculator = () => {
                   <button
                     key={`${item.expression}-${index}`}
                     onClick={() => handleHistoryClick(item)}
-                    className="group w-full rounded-lg p-3 text-left transition-colors hover:bg-blue-50"
+                    className="group w-full rounded-lg p-3 text-left transition-colors hover:bg-accent"
                   >
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       {item.expression}
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="font-medium">{item.result}</div>
+                      <div className="font-medium text-foreground">
+                        {item.result}
+                      </div>
                       <ChevronRight className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                     </div>
                   </button>
