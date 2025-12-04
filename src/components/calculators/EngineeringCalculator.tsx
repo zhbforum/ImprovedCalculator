@@ -3,43 +3,100 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Calculator, Delete, History, RotateCcw, ChevronRight } from "lucide-react";
+import {
+  Calculator,
+  Delete,
+  History,
+  RotateCcw,
+  ChevronRight,
+} from "lucide-react";
 import { evaluate } from "mathjs";
 
-const EngineeringCalculator = () => {
-  const [input, setInput] = useState<string>("");
-  const [result, setResult] = useState<string>("");
-  const [history, setHistory] = useState<
-    Array<{ expression: string; result: string }>
-  >([]);
-  const [isRadians, setIsRadians] = useState<boolean>(true);
+type HistoryItem = {
+  expression: string;
+  result: string;
+};
 
-  const handleNumberClick = (value: string) => {
+const trigAndLogButtons = ["sin", "cos", "tan", "log"] as const;
+const advancedButtons = ["√", "x²", "(", ")"] as const;
+
+const digitRows = [
+  ["7", "8", "9", "/"],
+  ["4", "5", "6", "*"],
+  ["1", "2", "3", "-"],
+] as const;
+
+const bottomRow = ["0", ".", "=", "+"] as const;
+
+const convertToRadiansIfNeeded = (expression: string, isRadians: boolean) => {
+  if (isRadians) return expression;
+
+  return expression.replace(
+    /(sin|cos|tan)\((.*?)\)/g,
+    (_, func, angle) => `${func}((${angle}) * PI / 180)`
+  );
+};
+
+const autoCloseParentheses = (expression: string): string => {
+  let balance = 0;
+
+  for (const char of expression) {
+    if (char === "(") {
+      balance += 1;
+    } else if (char === ")") {
+      if (balance > 0) {
+        balance -= 1;
+      }
+    }
+  }
+
+  if (balance > 0) {
+    return expression + ")".repeat(balance);
+  }
+
+  return expression;
+};
+
+const EngineeringCalculator = () => {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [isRadians, setIsRadians] = useState(true);
+
+  const appendValue = (value: string) => {
     setInput((prev) => prev + value);
   };
 
-  const handleOperatorClick = (operator: string) => {
-    setInput((prev) => prev + operator);
-  };
+  const handleFunctionClick = (func: string) => {
+    setInput((prev) => {
+      if (!prev) {
+        if (["sin", "cos", "tan", "log"].includes(func)) {
+          return `${func}(`;
+        }
 
-  const handleFunctionClick = (func: string) => 
-  {
-    if (["sin", "cos", "tan"].includes(func)) 
-    {
-      setInput((prev) => `${func}(${prev})`);
-    } 
-    else if (func === "√") 
-    {
-      setInput((prev) => `sqrt(${prev})`);
-    } 
-    else if (func === "x²") 
-    {
-      setInput((prev) => `(${prev})^2`);
-    } 
-    else 
-    {
-      setInput((prev) => `${func}(${prev})`);
-    }
+        if (func === "√") {
+          return "sqrt(";
+        }
+
+        return prev;
+      }
+
+      const safePrev = prev;
+
+      if (["sin", "cos", "tan"].includes(func)) {
+        return `${func}(${safePrev})`;
+      }
+
+      if (func === "√") {
+        return `sqrt(${safePrev})`;
+      }
+
+      if (func === "x²") {
+        return `(${safePrev})^2`;
+      }
+
+      return `${func}(${safePrev})`;
+    });
   };
 
   const handleClear = () => {
@@ -52,29 +109,32 @@ const EngineeringCalculator = () => {
   };
 
   const handleCalculate = () => {
+    if (!input.trim()) return;
+
     try {
-      let expression = input;
-      if (!isRadians) 
-      {
-        expression = expression.replace(
-          /(sin|cos|tan)\((.*?)\)/g,
-          (_, func, angle) => `${func}((${angle}) * PI / 180)`,
-        );
-      }
-      const calculatedResult = evaluate(expression).toString();
+      const balancedExpression = autoCloseParentheses(input);
+
+      setInput(balancedExpression);
+
+      const expressionForEval = convertToRadiansIfNeeded(
+        balancedExpression,
+        isRadians
+      );
+
+      const calculatedResult = evaluate(expressionForEval).toString();
+
       setResult(calculatedResult);
+
       setHistory((prev) => [
         ...prev,
-        { expression: input, result: calculatedResult },
+        { expression: balancedExpression, result: calculatedResult },
       ]);
-    } 
-    catch (error) 
-    {
+    } catch {
       setResult("Error");
     }
   };
 
-  const handleHistoryClick = (item: { expression: string; result: string }) => {
+  const handleHistoryClick = (item: HistoryItem) => {
     setInput(item.expression);
   };
 
@@ -83,17 +143,18 @@ const EngineeringCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
-      <Card className="w-full max-w-4xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr,300px] gap-8">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+      <Card className="w-full max-w-4xl p-8 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr,300px]">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2">
+              <h1 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-3xl font-bold text-transparent">
                 <Calculator className="h-8 w-8" />
                 Engineering Calculator
               </h1>
               <p className="text-sm text-gray-500">
-                Supports trigonometric functions and complex computers.
+                Supports trigonometric and logarithmic functions, with
+                radians/degrees modes.
               </p>
             </div>
 
@@ -102,11 +163,11 @@ const EngineeringCalculator = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Enter an expression"
-                className="text-lg font-medium h-12"
+                className="h-12 text-lg font-medium"
               />
 
-              <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
-                <div className="text-sm text-gray-600 mb-1">Result:</div>
+              <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+                <div className="mb-1 text-sm text-gray-600">Result:</div>
                 <div className="text-3xl font-bold text-blue-600">
                   {result || "0"}
                 </div>
@@ -115,29 +176,21 @@ const EngineeringCalculator = () => {
               <div className="grid grid-cols-4 gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => setIsRadians(!isRadians)}
+                  onClick={() => setIsRadians((prev) => !prev)}
                   className="col-span-2"
                 >
                   {isRadians ? "Radians" : "Degrees"}
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleDelete}
-                  className="col-span-1"
-                >
+                <Button variant="outline" onClick={handleDelete}>
                   <Delete className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleClear}
-                  className="col-span-1"
-                >
+                <Button variant="outline" onClick={handleClear}>
                   C
                 </Button>
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-                {["sin", "cos", "tan", "log"].map((func) => (
+                {trigAndLogButtons.map((func) => (
                   <Button
                     key={func}
                     variant="outline"
@@ -149,66 +202,42 @@ const EngineeringCalculator = () => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-                {["√", "x²", "(", ")"].map((op) => (
+                {advancedButtons.map((op) => (
                   <Button
                     key={op}
                     variant="outline"
-                    onClick={() => {
-                      if (op === "√" || op === "x²") {
-                        handleFunctionClick(op);
-                      } else {
-                        handleOperatorClick(op);
-                      }
-                    }}
+                    onClick={() =>
+                      op === "√" || op === "x²"
+                        ? handleFunctionClick(op)
+                        : appendValue(op)
+                    }
                   >
                     {op}
                   </Button>
                 ))}
               </div>
 
-              <div className="grid grid-cols-4 gap-2">
-                {["7", "8", "9", "/"].map((btn) => (
-                  <Button
-                    key={btn}
-                    variant="outline"
-                    onClick={() => handleNumberClick(btn)}
-                  >
-                    {btn}
-                  </Button>
-                ))}
-              </div>
+              {digitRows.map((row, rowIndex) => (
+                <div key={rowIndex} className="grid grid-cols-4 gap-2">
+                  {row.map((btn) => (
+                    <Button
+                      key={btn}
+                      variant="outline"
+                      onClick={() => appendValue(btn)}
+                    >
+                      {btn}
+                    </Button>
+                  ))}
+                </div>
+              ))}
 
               <div className="grid grid-cols-4 gap-2">
-                {["4", "5", "6", "*"].map((btn) => (
-                  <Button
-                    key={btn}
-                    variant="outline"
-                    onClick={() => handleNumberClick(btn)}
-                  >
-                    {btn}
-                  </Button>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {["1", "2", "3", "-"].map((btn) => (
-                  <Button
-                    key={btn}
-                    variant="outline"
-                    onClick={() => handleNumberClick(btn)}
-                  >
-                    {btn}
-                  </Button>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {["0", ".", "=", "+"].map((btn) => (
+                {bottomRow.map((btn) => (
                   <Button
                     key={btn}
                     variant={btn === "=" ? "default" : "outline"}
                     onClick={() =>
-                      btn === "=" ? handleCalculate() : handleNumberClick(btn)
+                      btn === "=" ? handleCalculate() : appendValue(btn)
                     }
                   >
                     {btn}
@@ -218,9 +247,9 @@ const EngineeringCalculator = () => {
             </div>
           </div>
 
-          <div className="border-l pl-8 space-y-4">
+          <div className="space-y-4 border-l pl-8">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+              <h2 className="flex items-center gap-2 text-xl font-semibold">
                 <History className="h-5 w-5" />
                 History
               </h2>
@@ -229,32 +258,36 @@ const EngineeringCalculator = () => {
                 size="sm"
                 onClick={clearHistory}
                 className="text-gray-500"
+                disabled={history.length === 0}
               >
                 Clear History
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="ml-1 h-4 w-4" />
               </Button>
-              <button>
-                <div className="Clear"></div>
-              </button>
             </div>
 
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-2">
                 {history.map((item, index) => (
                   <button
-                    key={index}
+                    key={`${item.expression}-${index}`}
                     onClick={() => handleHistoryClick(item)}
-                    className="w-full p-3 text-left rounded-lg hover:bg-blue-50 transition-colors group"
+                    className="group w-full rounded-lg p-3 text-left transition-colors hover:bg-blue-50"
                   >
                     <div className="text-sm text-gray-600">
                       {item.expression}
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="font-medium">{item.result}</div>
-                      <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ChevronRight className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                     </div>
                   </button>
                 ))}
+
+                {history.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    Calculation history will appear here.
+                  </p>
+                )}
               </div>
             </ScrollArea>
           </div>
