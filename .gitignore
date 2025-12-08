@@ -37,3 +37,6 @@ dist-ssr/
 *.log/
 
 LICENSE  
+
+# Ignoring test coverage output directory
+/coverage
