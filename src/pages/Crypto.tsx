@@ -6,10 +6,28 @@ const Crypto = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="container mx-auto p-4 flex-grow">
-        <h1 className="text-2xl font-bold mb-6">Crypto Converter</h1>
-        <CryptoConverter />
+
+      <div className="relative flex-grow">
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
+          <div className="absolute -top-24 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary/20 via-purple-500/15 to-cyan-500/20 blur-3xl" />
+        </div>
+
+        <div className="container mx-auto p-4 py-10">
+          <div className="mb-8 max-w-2xl">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Crypto Converter
+            </h1>
+            <p className="mt-2 text-muted-foreground">
+              Convert crypto instantly using USD-based rates (CoinGecko).
+              Updates every 30 seconds.
+            </p>
+          </div>
+
+          <CryptoConverter />
+        </div>
       </div>
+
       <Footer />
     </div>
   );
