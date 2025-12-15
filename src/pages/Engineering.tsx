@@ -7,10 +7,10 @@ const Engineering = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <div className="relative flex-grow">
-        <div className="absolute inset-0 -z-10">
+      <div className="relative flex-grow overflow-hidden">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background" />
-          <div className="absolute -top-24 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary/20 via-purple-500/15 to-cyan-500/20 blur-3xl" />
+          <div className="absolute -top-24 left-1/2 h-[420px] w-[min(720px,100vw)] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary/20 via-purple-500/15 to-cyan-500/20 blur-3xl" />
         </div>
 
         <div className="container mx-auto p-4 py-10">
