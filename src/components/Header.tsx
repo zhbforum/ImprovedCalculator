@@ -19,13 +19,13 @@ import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 
 const Header = () => {
   return (
-    <header className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between gap-4">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Calculators</NavigationMenuTrigger>
-              <NavigationMenuContent>
+              <NavigationMenuContent className="z-[60]">
                 <div className="grid gap-3 p-4 w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
                   <Link
                     to="/"
