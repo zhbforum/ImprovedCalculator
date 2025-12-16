@@ -177,3 +177,69 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes financeFloat1 {
+  0% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(-50%) translateY(18px) scale(1.06);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.75;
+  }
+}
+
+@keyframes financeFloat2 {
+  0% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(-50%) translateY(-14px) scale(1.08);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px) scale(1);
+    opacity: 0.55;
+  }
+}
+
+@keyframes financeShimmer {
+  0% {
+    transform: translate3d(0, 0, 0);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+    filter: hue-rotate(12deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+.finance-blob-1 {
+  animation: financeFloat1 10s ease-in-out infinite;
+}
+
+.finance-blob-2 {
+  animation: financeFloat2 14s ease-in-out infinite;
+}
+
+.finance-shimmer {
+  animation: financeShimmer 16s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finance-blob-1,
+  .finance-blob-2,
+  .finance-shimmer {
+    animation: none !important;
+  }
+}
+
