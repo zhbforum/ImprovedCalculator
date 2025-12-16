@@ -1,102 +1,222 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Card } from "@/components/ui/card";
+import React, { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-const CURRENCIES = ['USD', 'EUR', 'RUB', 'GBP', 'JPY', 'CNY', 'UAH', 'KZT', 'AED'];
+const CURRENCIES = [
+  "USD",
+  "EUR",
+  "RUB",
+  "GBP",
+  "JPY",
+  "CNY",
+  "UAH",
+  "KZT",
+  "AED",
+];
 
 const fetchExchangeRates = async (base: string) => {
-  const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${base}`);
-  if (!response.ok) throw new Error('Failed to fetch exchange rates');
+  const response = await fetch(
+    `https://api.exchangerate-api.com/v4/latest/${base}`
+  );
+  if (!response.ok) throw new Error("Failed to fetch exchange rates");
   return response.json();
 };
 
+const clampNumberString = (v: string) => {
+  if (v === "") return "";
+  const cleaned = v.replace(",", ".");
+  if (!/^\d*\.?\d*$/.test(cleaned)) return v;
+  return cleaned;
+};
+
+const formatMoney = (n: number, digits = 2) =>
+  new Intl.NumberFormat(undefined, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(n);
+
 const CurrencyConverter = () => {
-  const [amount, setAmount] = useState<string>('1');
-  const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('EUR');
+  const [amount, setAmount] = useState<string>("1000");
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("EUR");
   const { toast } = useToast();
 
-  const { data: rates, isLoading, error } = useQuery({
-    queryKey: ['exchangeRates', fromCurrency],
+  const {
+    data: rates,
+    isLoading,
+    isFetching,
+    error,
+    dataUpdatedAt,
+  } = useQuery({
+    queryKey: ["exchangeRates", fromCurrency],
     queryFn: () => fetchExchangeRates(fromCurrency),
-    refetchInterval: 60000, 
+    refetchInterval: 60_000,
+    staleTime: 55_000,
+    retry: 2,
   });
 
-  if (error) {
+  useEffect(() => {
+    if (!error) return;
     toast({
       title: "Error",
       description: "Failed to load exchange rates",
       variant: "destructive",
     });
-  }
+  }, [error, toast]);
 
-  const convertedAmount = rates?.rates?.[toCurrency] 
-    ? (parseFloat(amount) * rates.rates[toCurrency]).toFixed(2) 
-    : '0.00';
+  const amountNum = useMemo(() => {
+    const n = Number(amount);
+    return Number.isFinite(n) ? n : NaN;
+  }, [amount]);
+
+  const rate = rates?.rates?.[toCurrency] as number | undefined;
+
+  const converted = useMemo(() => {
+    if (!rate || !Number.isFinite(amountNum)) return null;
+    return amountNum * rate;
+  }, [amountNum, rate]);
+
+  const onSwap = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  };
+
+  const updatedLabel = useMemo(() => {
+    if (!dataUpdatedAt) return null;
+    const d = new Date(dataUpdatedAt);
+    return `Updated: ${d.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  }, [dataUpdatedAt]);
+
+  const amountInvalid = amount !== "" && !Number.isFinite(amountNum);
 
   return (
-    <Card className="p-6">
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Amont</label>
-            <Input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min="0"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">From currency</label>
-            <Select value={fromCurrency} onValueChange={setFromCurrency}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CURRENCIES.map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+    <div>
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-1">
+          <div className="text-lg font-semibold">Currency converter</div>
+          <div className="text-sm text-muted-foreground">
+            Live rates. Quick swap. Clean result.
           </div>
         </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">To currency</label>
-          <Select value={toCurrency} onValueChange={setToCurrency}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {CURRENCIES.map((currency) => (
-                <SelectItem key={currency} value={currency}>
-                  {currency}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="pt-4 border-t">
-          <p className="text-lg font-semibold">
-            {isLoading ? (
-              "Loading..."
-            ) : (
-              `${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`
-            )}
-          </p>
-          {rates && (
-            <p className="text-sm text-muted-foreground">
-              Currency: 1 {fromCurrency} = {rates.rates[toCurrency]} {toCurrency}
-            </p>
-          )}
+
+        <div className="text-xs text-muted-foreground">
+          {isLoading ? "Loading rates…" : updatedLabel}
         </div>
       </div>
-    </Card>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Amount</label>
+          <Input
+            type="text"
+            inputMode="decimal"
+            value={amount}
+            onChange={(e) => setAmount(clampNumberString(e.target.value))}
+            placeholder="e.g. 100"
+            aria-invalid={amountInvalid}
+          />
+          {amountInvalid && (
+            <p className="text-xs text-destructive">Enter a valid number.</p>
+          )}
+
+          <div className="flex flex-wrap gap-2 pt-1">
+            {["1", "10", "100", "1000"].map((v) => (
+              <Button
+                key={v}
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => setAmount(v)}
+              >
+                {v}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">From</label>
+              <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button
+              type="button"
+              variant="secondary"
+              className="mb-1"
+              onClick={onSwap}
+              disabled={isLoading}
+              title="Swap currencies"
+            >
+              ⇄
+            </Button>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">To</label>
+              <Select value={toCurrency} onValueChange={setToCurrency}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {CURRENCIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
+            <div className="text-sm text-muted-foreground">
+              {isLoading || isFetching ? "Calculating…" : "Result"}
+            </div>
+
+            <div className="mt-1 text-xl font-semibold">
+              {converted == null || amountInvalid ? (
+                "—"
+              ) : (
+                <>
+                  {formatMoney(amountNum)} {fromCurrency} ={" "}
+                  {formatMoney(converted)} {toCurrency}
+                </>
+              )}
+            </div>
+
+            <div className="mt-2 text-xs text-muted-foreground">
+              {rate
+                ? `1 ${fromCurrency} = ${rate} ${toCurrency}`
+                : "Rate unavailable"}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
