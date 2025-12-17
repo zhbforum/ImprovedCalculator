@@ -346,7 +346,7 @@ const CryptoConverter = () => {
               key={p.symbol}
               className="relative overflow-hidden border bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/60"
             >
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-purple-500/10" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent" />
               <div className="relative p-4">
                 <div className="flex items-center justify-between">
                   <div className="text-sm font-semibold">{p.symbol}</div>
@@ -375,7 +375,7 @@ const CryptoConverter = () => {
       </div>
 
       <Card className="relative overflow-hidden border bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-purple-500/10" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent" />
 
         <div className="relative p-6 md:p-8">
           <div className="flex items-start justify-between gap-4">

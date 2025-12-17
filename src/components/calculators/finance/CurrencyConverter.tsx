@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
+import { ArrowLeftRight } from "lucide-react";
 
 const CURRENCIES = [
   "USD",
@@ -136,9 +137,10 @@ const CurrencyConverter = () => {
               <Button
                 key={v}
                 type="button"
-                variant="secondary"
+                variant="outline"
                 size="sm"
                 onClick={() => setAmount(v)}
+                className="h-8 rounded-full bg-background/40 px-3 text-xs hover:bg-background transition"
               >
                 {v}
               </Button>
@@ -151,7 +153,7 @@ const CurrencyConverter = () => {
             <div className="space-y-2">
               <label className="text-sm font-medium">From</label>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                <SelectTrigger>
+                <SelectTrigger className="h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -166,19 +168,20 @@ const CurrencyConverter = () => {
 
             <Button
               type="button"
-              variant="secondary"
-              className="mb-1"
+              variant="outline"
               onClick={onSwap}
               disabled={isLoading}
               title="Swap currencies"
+              aria-label="Swap currencies"
+              className="mb-1 h-11 w-11 rounded-full bg-background/70 p-0 hover:bg-background transition"
             >
-              ⇄
+              <ArrowLeftRight className="h-5 w-5" />
             </Button>
 
             <div className="space-y-2">
               <label className="text-sm font-medium">To</label>
               <Select value={toCurrency} onValueChange={setToCurrency}>
-                <SelectTrigger>
+                <SelectTrigger className="h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -191,7 +194,9 @@ const CurrencyConverter = () => {
               </Select>
             </div>
           </div>
+        </div>
 
+        <div className="md:col-span-2">
           <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
             <div className="text-sm text-muted-foreground">
               {isLoading || isFetching ? "Calculating…" : "Result"}
