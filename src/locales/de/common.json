@@ -1,0 +1,74 @@
+{
+  "header": {
+    "menu": {
+      "trigger": "Rechner"
+    },
+    "items": {
+      "home": {
+        "title": "Start",
+        "desc": "Willkommensseite"
+      },
+      "engineering": {
+        "title": "Ingenieur",
+        "desc": "Trigonometrie und erweiterte Berechnungen"
+      },
+      "graph": {
+        "title": "Grafik",
+        "desc": "Funktionsgraphen zeichnen"
+      },
+      "finance": {
+        "title": "Finanzen",
+        "desc": "Kredite und Investitionen"
+      },
+      "matrix": {
+        "title": "Matrizen",
+        "desc": "Matrizenoperationen"
+      },
+      "programming": {
+        "title": "Programmierung",
+        "desc": "Skripte ausführen"
+      },
+      "crypto": {
+        "title": "Krypto",
+        "desc": "Kryptowährungs-Tools"
+      }
+    }
+  },
+
+  "home": {
+    "heroTitle": "Multifunktionaler Rechner",
+    "heroSubtitle": "Ein leistungsstarkes Werkzeug für mathematische, finanzielle und technische Berechnungen",
+    "howToUseTitle": "So funktioniert es",
+    "howToUse": {
+      "step1": "1. Wählen Sie einen gewünschten Rechnertyp aus",
+      "step2": "2. Geben Sie die Daten in die entsprechenden Felder ein",
+      "step3": "3. Erhalten Sie sofortige Berechnungsergebnisse"
+    },
+    "features": {
+      "engineering": {
+        "title": "Ingenieur-Rechner",
+        "description": "Komplexe Berechnungen einschließlich Trigonometrie"
+      },
+      "graph": {
+        "title": "Grafik-Rechner",
+        "description": "Funktionsgraphen mit Skalierung und Anpassung"
+      },
+      "finance": {
+        "title": "Finanzrechner",
+        "description": "Berechnung von Krediten, Investitionen und Währungen"
+      },
+      "matrix": {
+        "title": "Matrix-Rechner",
+        "description": "Matrixoperationen wie Addition, Multiplikation und Transposition"
+      },
+      "programming": {
+        "title": "Programmierbarer Rechner",
+        "description": "Ein Rechner mit Unterstützung für kleine Programme"
+      },
+      "crypto": {
+        "title": "Krypto-Rechner",
+        "description": "Echtzeit-Anzeige von Kryptowährungspreisen"
+      }
+    }
+  }
+}

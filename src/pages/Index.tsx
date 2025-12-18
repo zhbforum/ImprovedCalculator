@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Calculator,
   ChartCandlestick,
@@ -10,51 +11,46 @@ import {
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
 import AnimatedGlowBackground from "@/components/backgrounds/AnimatedGlowBackground";
 import { Card } from "@/components/ui/card";
-
 import { glassCard } from "@/lib/styles";
 
+type FeatureId =
+  | "engineering"
+  | "graph"
+  | "finance"
+  | "matrix"
+  | "programming"
+  | "crypto";
+
 const Index = () => {
-  const features = [
+  const { t } = useTranslation();
+
+  const features: Array<{
+    id: FeatureId;
+    icon: JSX.Element;
+    link: string;
+  }> = [
     {
+      id: "engineering",
       icon: <Calculator className="h-8 w-8" />,
-      title: "Engineering calculator",
-      description:
-        "Perform complex math calculations, including trigonometric functions",
       link: "/engineering",
     },
+    { id: "graph", icon: <ChartLine className="h-8 w-8" />, link: "/graph" },
     {
-      icon: <ChartLine className="h-8 w-8" />,
-      title: "Graphing calculator",
-      description:
-        "Build function graphs with the ability to scale and customize",
-      link: "/graph",
-    },
-    {
+      id: "finance",
       icon: <DollarSign className="h-8 w-8" />,
-      title: "Financial calculator",
-      description: "Calculate loans, investments and convert currencies",
       link: "/finance",
     },
+    { id: "matrix", icon: <Grid className="h-8 w-8" />, link: "/matrix" },
     {
-      icon: <Grid className="h-8 w-8" />,
-      title: "Matrix calculator",
-      description:
-        "Perform operations with matrices: addition, multiplication, transposition",
-      link: "/matrix",
-    },
-    {
+      id: "programming",
       icon: <CodeXml className="h-8 w-8" />,
-      title: "Programmable calculator",
-      description: "A calculator that accepts small programs",
       link: "/programming",
     },
     {
+      id: "crypto",
       icon: <ChartCandlestick className="h-8 w-8" />,
-      title: "Cryptocurrency calculator",
-      description: "A calculator which can show your crypto price in real time",
       link: "/crypto",
     },
   ];
@@ -72,31 +68,30 @@ const Index = () => {
           <section className="text-center mb-12">
             <div className="relative inline-block">
               <div className="hero-title-glow">
-                <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl mb-4">
-                  Multifunctional calculator
+                <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl mb-4 leading-[1.30] md:leading-[1.30]">
+                  {t("home.heroTitle")}
                 </h1>
               </div>
             </div>
 
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A powerful tool for mathematical, financial and engineering
-              calculations
+              {t("home.heroSubtitle")}
             </p>
           </section>
 
           <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12">
-            {features.map((feature, index) => (
-              <Link key={index} to={feature.link} className="group">
+            {features.map((feature) => (
+              <Link key={feature.id} to={feature.link} className="group">
                 <Card
                   className={`${glassCard} p-6 h-full cursor-pointer transition
                               hover:bg-background/45 hover:shadow-lg`}
                 >
                   <div className="mb-4 text-primary">{feature.icon}</div>
                   <h3 className="text-lg font-semibold mb-2">
-                    {feature.title}
+                    {t(`home.features.${feature.id}.title`)}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    {feature.description}
+                    {t(`home.features.${feature.id}.description`)}
                   </p>
                 </Card>
               </Link>
@@ -104,14 +99,13 @@ const Index = () => {
           </section>
 
           <section className={`${glassCard} max-w-3xl mx-auto text-center p-6`}>
-            <h2 className="text-2xl font-semibold mb-4">How to use</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              {t("home.howToUseTitle")}
+            </h2>
             <div className="text-muted-foreground space-y-3">
-              <p>
-                1. Select the desired type of calculator from the ones presented
-                above
-              </p>
-              <p>2. Enter data in the appropriate fields</p>
-              <p>3. Get instant calculation results</p>
+              <p>{t("home.howToUse.step1")}</p>
+              <p>{t("home.howToUse.step2")}</p>
+              <p>{t("home.howToUse.step3")}</p>
             </div>
           </section>
         </main>
