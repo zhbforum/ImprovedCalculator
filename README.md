@@ -35,7 +35,7 @@ Perform advanced calculations, including trigonometric, logarithmic, and exponen
 - Matrix addition, subtraction, multiplication, and transposition.
 - Determinants and Gaussian elimination for solving linear equations.
 
-### **5. Programmable Calculator**
+### **5. Programmable Calculator** 
 - Supports multiple programming languages and versions:
   - Golang
   - JavaScript
@@ -48,7 +48,12 @@ Perform advanced calculations, including trigonometric, logarithmic, and exponen
   - Swift, etc.
 - Powered by **[Judge0 API](https://rapidapi.com/judge0-official/api/judge0-ce)** for compiling and running code.
 
-**6. Crypto Converter**
+> **Status**
+> This feature is currently **not working**.
+> The current implementation will be **replaced with a new execution / sandbox approach** in a future update.
+
+
+### **6. Crypto Converter**
 - Real-time cryptocurrency prices and conversions.
 - Powered by **[CoinMarketCap API](https://coinmarketcap.com/api/)**.
 
