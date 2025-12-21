@@ -257,7 +257,7 @@
 
   .hero-title-glow {
     position: relative;
-    display: inline-block;
+    display: block;
   }
 
   .hero-title-glow::before {

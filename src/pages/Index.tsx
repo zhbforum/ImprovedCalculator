@@ -64,11 +64,11 @@ const Index = () => {
         contentClassName="flex-grow"
         variant="default"
       >
-        <main className="flex-1 container py-10">
+        <main className="flex-1 container py-10 px-4">
           <section className="text-center mb-12">
-            <div className="relative inline-block">
+            <div className="relative block w-full max-w-3xl mx-auto">
               <div className="hero-title-glow">
-                <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl mb-4 leading-[1.30] md:leading-[1.30]">
+                <h1 className="hero-title text-3xl sm:text-6xl md:text-6xl mb-4 leading-[1.15]">
                   {t("home.heroTitle")}
                 </h1>
               </div>
@@ -83,8 +83,7 @@ const Index = () => {
             {features.map((feature) => (
               <Link key={feature.id} to={feature.link} className="group">
                 <Card
-                  className={`${glassCard} p-6 h-full cursor-pointer transition
-                              hover:bg-background/45 hover:shadow-lg`}
+                  className={`${glassCard} p-6 h-full cursor-pointer transition hover:bg-background/45 hover:shadow-lg`}
                 >
                   <div className="mb-4 text-primary">{feature.icon}</div>
                   <h3 className="text-lg font-semibold mb-2">
