@@ -5,16 +5,18 @@
 The **Improved Calculator** is a powerful web-based application designed to perform various types of calculations, catering to the needs of engineers, financial analysts, mathematicians, and developers. This calculator integrates multiple advanced features and supports calculations ranging from basic arithmetic to programming logic, matrix operations, and cryptocurrency conversions.
 
 
----
-### Tools & Libraries
-![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white&style=flat)
-![React.js](https://img.shields.io/badge/-React.js-61DAFB?logo=react&logoColor=white&style=flat)
-![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat)
-![LucideReact](https://img.shields.io/badge/-LucideReact-FF9E0F?logo=lucide&logoColor=white&style=flat)
-![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white&style=flat)
-![Radix UI](https://img.shields.io/badge/-Radix_UI-8B5CF6?logo=radix-ui&logoColor=white&style=flat)
-![Chart.js](https://img.shields.io/badge/-Chart.js-FF6384?logo=chartdotjs&logoColor=white&style=flat)
-![Axios](https://img.shields.io/badge/-Axios-5A29E4?logo=axios&logoColor=white&style=flat)
+## Tech Stack
+
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix_UI-Accessible_Primitives-000000?style=for-the-badge&logo=radix-ui&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-Data_Visualization-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![mathjs](https://img.shields.io/badge/mathjs-Math_Engine-111827?style=for-the-badge)
+![Axios](https://img.shields.io/badge/Axios-HTTP_Client-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+
+
 ---
 
 ## Features
