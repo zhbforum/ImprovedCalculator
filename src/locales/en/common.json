@@ -4,34 +4,13 @@
       "trigger": "Calculators"
     },
     "items": {
-      "home": {
-        "title": "Home",
-        "desc": "Welcome page"
-      },
-      "engineering": {
-        "title": "Engineering",
-        "desc": "Trigonometry and advanced calculations"
-      },
-      "graph": {
-        "title": "Graphic",
-        "desc": "Graphing functions"
-      },
-      "finance": {
-        "title": "Finance",
-        "desc": "Loans and investments"
-      },
-      "matrix": {
-        "title": "Matrix",
-        "desc": "Matrix operations"
-      },
-      "programming": {
-        "title": "Programming",
-        "desc": "Executing scripts"
-      },
-      "crypto": {
-        "title": "Crypto",
-        "desc": "Cryptocurrency tools"
-      }
+      "home": { "title": "Home", "desc": "Welcome page" },
+      "engineering": { "title": "Engineering", "desc": "Trigonometry and advanced calculations" },
+      "graph": { "title": "Graphic", "desc": "Graphing functions" },
+      "finance": { "title": "Finance", "desc": "Loans and investments" },
+      "matrix": { "title": "Matrix", "desc": "Matrix operations" },
+      "programming": { "title": "Programming", "desc": "Executing scripts" },
+      "crypto": { "title": "Crypto", "desc": "Cryptocurrency tools" }
     }
   },
 
@@ -49,25 +28,37 @@
         "title": "Engineering calculator",
         "description": "Perform complex math calculations, including trigonometric functions"
       },
-      "graph": {
-        "title": "Graphing calculator",
-        "description": "Build function graphs with the ability to scale and customize"
-      },
-      "finance": {
-        "title": "Financial calculator",
-        "description": "Calculate loans, investments and convert currencies"
-      },
-      "matrix": {
-        "title": "Matrix calculator",
-        "description": "Perform operations with matrices: addition, multiplication, transposition"
-      },
-      "programming": {
-        "title": "Programmable calculator",
-        "description": "A calculator that accepts small programs"
-      },
-      "crypto": {
-        "title": "Cryptocurrency calculator",
-        "description": "A calculator which can show your crypto price in real time"
+      "graph": { "title": "Graphing calculator", "description": "Build function graphs with the ability to scale and customize" },
+      "finance": { "title": "Financial calculator", "description": "Calculate loans, investments and convert currencies" },
+      "matrix": { "title": "Matrix calculator", "description": "Perform operations with matrices: addition, multiplication, transposition" },
+      "programming": { "title": "Programmable calculator", "description": "A calculator that accepts small programs" },
+      "crypto": { "title": "Cryptocurrency calculator", "description": "A calculator which can show your crypto price in real time" }
+    }
+  },
+
+  "engineering": {
+    "page": { "title": "Engineering Calculator" },
+    "input": { "placeholder": "Enter an expression" },
+    "result": { "label": "Result" },
+    "history": { "empty": "Calculation history will appear here." },
+
+    "rightPanel": {
+      "tabs": { "history": "History", "shortcuts": "Shortcuts" },
+      "actions": { "clear": "Clear" }
+    },
+
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "or": "or",
+      "alsoSupported": "Also supported:",
+      "tipPrefix": "Tip: press",
+      "tipSuffix": "to return to History.",
+      "items": {
+        "calculate": "Calculate",
+        "clear": "Clear",
+        "deleteLast": "Delete last",
+        "focusInput": "Focus input",
+        "toggleRadDeg": "Toggle rad/deg"
       }
     }
   }

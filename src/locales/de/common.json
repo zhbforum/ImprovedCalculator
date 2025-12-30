@@ -4,34 +4,13 @@
       "trigger": "Rechner"
     },
     "items": {
-      "home": {
-        "title": "Start",
-        "desc": "Willkommensseite"
-      },
-      "engineering": {
-        "title": "Wissenschaftlicher",
-        "desc": "Trigonometrie und erweiterte Berechnungen"
-      },
-      "graph": {
-        "title": "Grafik",
-        "desc": "Funktionsgraphen zeichnen"
-      },
-      "finance": {
-        "title": "Finanzen",
-        "desc": "Kredite und Investitionen"
-      },
-      "matrix": {
-        "title": "Matrizen",
-        "desc": "Matrizenoperationen"
-      },
-      "programming": {
-        "title": "Programmierung",
-        "desc": "Skripte ausführen"
-      },
-      "crypto": {
-        "title": "Krypto",
-        "desc": "Kryptowährungs-Tools"
-      }
+      "home": { "title": "Start", "desc": "Willkommensseite" },
+      "engineering": { "title": "Wissenschaftlicher", "desc": "Trigonometrie und erweiterte Berechnungen" },
+      "graph": { "title": "Grafik", "desc": "Funktionsgraphen zeichnen" },
+      "finance": { "title": "Finanzen", "desc": "Kredite und Investitionen" },
+      "matrix": { "title": "Matrizen", "desc": "Matrizenoperationen" },
+      "programming": { "title": "Programmierung", "desc": "Skripte ausführen" },
+      "crypto": { "title": "Krypto", "desc": "Kryptowährungs-Tools" }
     }
   },
 
@@ -45,29 +24,38 @@
       "step3": "3. Erhalten Sie sofortige Berechnungsergebnisse"
     },
     "features": {
-      "engineering": {
-        "title": "Wissenschaftlicher-Rechner",
-        "description": "Komplexe Berechnungen einschließlich Trigonometrie"
-      },
-      "graph": {
-        "title": "Grafik-Rechner",
-        "description": "Funktionsgraphen mit Skalierung und Anpassung"
-      },
-      "finance": {
-        "title": "Finanzrechner",
-        "description": "Berechnung von Krediten, Investitionen und Währungen"
-      },
-      "matrix": {
-        "title": "Matrix-Rechner",
-        "description": "Matrixoperationen wie Addition, Multiplikation und Transposition"
-      },
-      "programming": {
-        "title": "Programmierbarer Rechner",
-        "description": "Ein Rechner mit Unterstützung für kleine Programme"
-      },
-      "crypto": {
-        "title": "Krypto-Rechner",
-        "description": "Echtzeit-Anzeige von Kryptowährungspreisen"
+      "engineering": { "title": "Wissenschaftlicher-Rechner", "description": "Komplexe Berechnungen einschließlich Trigonometrie" },
+      "graph": { "title": "Grafik-Rechner", "description": "Funktionsgraphen mit Skalierung und Anpassung" },
+      "finance": { "title": "Finanzrechner", "description": "Berechnung von Krediten, Investitionen und Währungen" },
+      "matrix": { "title": "Matrix-Rechner", "description": "Matrixoperationen wie Addition, Multiplikation und Transposition" },
+      "programming": { "title": "Programmierbarer Rechner", "description": "Ein Rechner mit Unterstützung für kleine Programme" },
+      "crypto": { "title": "Krypto-Rechner", "description": "Echtzeit-Anzeige von Kryptowährungspreisen" }
+    }
+  },
+
+  "engineering": {
+    "page": { "title": "Wissenschaftlicher Rechner" },
+    "input": { "placeholder": "Geben Sie einen Ausdruck ein" },
+    "result": { "label": "Ergebnis" },
+    "history": { "empty": "Der Verlauf der Berechnungen wird hier angezeigt." },
+
+    "rightPanel": {
+      "tabs": { "history": "Verlauf", "shortcuts": "Shortcuts" },
+      "actions": { "clear": "Löschen" }
+    },
+
+    "shortcuts": {
+      "title": "Tastenkombinationen",
+      "or": "oder",
+      "alsoSupported": "Auch unterstützt:",
+      "tipPrefix": "Tipp: Drücke",
+      "tipSuffix": "um zum Verlauf zurückzukehren.",
+      "items": {
+        "calculate": "Berechnen",
+        "clear": "Löschen",
+        "deleteLast": "Letztes löschen",
+        "focusInput": "Eingabe fokussieren",
+        "toggleRadDeg": "Rad/Deg umschalten"
       }
     }
   }
