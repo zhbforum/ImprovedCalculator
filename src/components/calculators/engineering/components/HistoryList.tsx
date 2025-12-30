@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import type { HistoryItem } from "../types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   history: HistoryItem[];
@@ -8,10 +9,12 @@ type Props = {
 };
 
 export const HistoryList = ({ history, onPick }: Props) => {
+  const { t } = useTranslation();
+
   if (history.length === 0) {
     return (
       <div className="rounded-xl border bg-background/40 p-3 text-sm text-muted-foreground">
-        Calculation history will appear here.
+        {t("engineering.history.empty")}
       </div>
     );
   }
