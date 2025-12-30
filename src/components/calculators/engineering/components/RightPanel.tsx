@@ -6,6 +6,7 @@ import type { HistoryItem, RightPanelTab } from "../types";
 import { tabBtnClass } from "../utils";
 import { HistoryList } from "./HistoryList";
 import { ShortcutsCard } from "./ShortcutsCard";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   rightTab: RightPanelTab;
@@ -22,18 +23,20 @@ export const RightPanel = ({
   onPickHistory,
   onClearHistory,
 }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4 md:border-l md:pl-8">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="grid grid-cols-[1fr_auto] items-start gap-2">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
           <button
             type="button"
             onClick={() => setRightTab("history")}
             className={tabBtnClass(rightTab === "history")}
           >
-            <span className="inline-flex items-center gap-2">
-              <History className="h-4 w-4" />
-              History
+            <span className="inline-flex items-center gap-2 whitespace-nowrap">
+              <History className="h-4 w-4 shrink-0" />
+              {t("engineering.rightPanel.tabs.history")}
             </span>
           </button>
 
@@ -42,9 +45,9 @@ export const RightPanel = ({
             onClick={() => setRightTab("shortcuts")}
             className={tabBtnClass(rightTab === "shortcuts")}
           >
-            <span className="inline-flex items-center gap-2">
-              <Keyboard className="h-4 w-4" />
-              Shortcuts
+            <span className="inline-flex items-center gap-2 whitespace-nowrap">
+              <Keyboard className="h-4 w-4 shrink-0" />
+              {t("engineering.rightPanel.tabs.shortcuts")}
             </span>
           </button>
         </div>
@@ -55,10 +58,15 @@ export const RightPanel = ({
             size="sm"
             onClick={onClearHistory}
             disabled={history.length === 0}
-            className="text-muted-foreground"
+            className="text-muted-foreground shrink-0 whitespace-nowrap"
           >
-            Clear
-            <RotateCcw className="ml-2 h-4 w-4" />
+            <span className="hidden sm:inline">
+              {t("engineering.rightPanel.actions.clear")}
+            </span>
+            <span className="sr-only">
+              {t("engineering.rightPanel.actions.clear")}
+            </span>
+            <RotateCcw className="h-4 w-4 sm:ml-2" />
           </Button>
         )}
       </div>
