@@ -14,6 +14,11 @@
     }
   },
 
+  "footer": {
+    "copyrightPrefix": "© {{year}} Improved Calculator · Entwickler",
+    "viewOnGitHub": "Auf GitHub ansehen"
+  },
+
   "home": {
     "heroTitle": "Multifunktionaler Rechner",
     "heroSubtitle": "Ein leistungsstarkes Werkzeug für mathematische, finanzielle und technische Berechnungen",
@@ -24,24 +29,60 @@
       "step3": "3. Erhalten Sie sofortige Berechnungsergebnisse"
     },
     "features": {
-      "engineering": { "title": "Wissenschaftlicher-Rechner", "description": "Komplexe Berechnungen einschließlich Trigonometrie" },
-      "graph": { "title": "Grafik-Rechner", "description": "Funktionsgraphen mit Skalierung und Anpassung" },
-      "finance": { "title": "Finanzrechner", "description": "Berechnung von Krediten, Investitionen und Währungen" },
-      "matrix": { "title": "Matrix-Rechner", "description": "Matrixoperationen wie Addition, Multiplikation und Transposition" },
-      "programming": { "title": "Programmierbarer Rechner", "description": "Ein Rechner mit Unterstützung für kleine Programme" },
-      "crypto": { "title": "Krypto-Rechner", "description": "Echtzeit-Anzeige von Kryptowährungspreisen" }
+      "engineering": {
+        "title": "Wissenschaftlicher-Rechner",
+        "description": "Komplexe Berechnungen einschließlich Trigonometrie"
+      },
+      "graph": {
+        "title": "Grafik-Rechner",
+        "description": "Funktionsgraphen mit Skalierung und Anpassung"
+      },
+      "finance": {
+        "title": "Finanzrechner",
+        "description": "Berechnung von Krediten, Investitionen und Währungen"
+      },
+      "matrix": {
+        "title": "Matrix-Rechner",
+        "description": "Matrixoperationen wie Addition, Multiplikation und Transposition"
+      },
+      "programming": {
+        "title": "Programmierbarer Rechner",
+        "description": "Ein Rechner mit Unterstützung für kleine Programme",
+        "status": "Aktuell nicht funktionsfähig"
+      },
+      "crypto": {
+        "title": "Krypto-Rechner",
+        "description": "Echtzeit-Anzeige von Kryptowährungspreisen"
+      }
+    }
+  },
+
+  "programming": {
+    "page": {
+      "statusLabel": "Status",
+      "title": "Diese Funktion funktioniert derzeit nicht.",
+      "description": "Die aktuelle Implementierung wird in einem künftigen Update durch einen neuen Ausführungs-/Sandbox-Ansatz ersetzt."
     }
   },
 
   "engineering": {
     "page": { "title": "Wissenschaftlicher Rechner" },
+    "calculator": { "title": "Rechner" },
     "input": { "placeholder": "Geben Sie einen Ausdruck ein" },
-    "result": { "label": "Ergebnis" },
+    "result": {
+      "label": "Ergebnis",
+      "error": "Fehler"
+    },
     "history": { "empty": "Der Verlauf der Berechnungen wird hier angezeigt." },
 
     "rightPanel": {
       "tabs": { "history": "Verlauf", "shortcuts": "Shortcuts" },
       "actions": { "clear": "Löschen" }
+    },
+
+    "keypad": {
+      "radians": "Radiant",
+      "degrees": "Grad"
     },
 
     "shortcuts": {
@@ -57,6 +98,241 @@
         "focusInput": "Eingabe fokussieren",
         "toggleRadDeg": "Rad/Deg umschalten"
       }
+    }
+  },
+
+  "graph": {
+    "page": {
+      "title": "Grafik-Rechner",
+      "description": "Geben Sie mathematische Funktionen ein, um Graphen zu erstellen. Unterstützt werden trigonometrische Funktionen (sin, cos, tan), Exponenten (e^x), Logarithmen (log, ln), Potenzen (x^2) und andere mathematische Ausdrücke."
+    },
+    "controls": {
+      "showGrid": "Raster anzeigen",
+      "showAxis": "Achsen anzeigen",
+      "expressionPlaceholder": "Beispiel: sin(x) oder x^2 + 2*x + 1",
+      "addGraph": "Graph hinzufügen",
+      "color": "Farbe",
+      "thickness": "Dicke",
+      "thicknessValue": "Dicke: {{value}}",
+      "hideGraph": "Graph ausblenden",
+      "showGraph": "Graph anzeigen",
+      "removeGraph": "Graph entfernen"
+    },
+    "colors": {
+      "blue": "Blau",
+      "red": "Rot",
+      "green": "Grün",
+      "purple": "Lila",
+      "orange": "Orange"
+    },
+    "lineWidths": {
+      "thin": "Dünn",
+      "medium": "Mittel",
+      "thick": "Dick",
+      "veryThick": "Sehr dick"
+    }
+  },
+
+  "finance": {
+    "page": {
+      "title": "Finanzrechner",
+      "description": "Währungsumrechnung, Zinseszins und Kreditraten an einem Ort."
+    },
+    "tabs": {
+      "currency": "Währung",
+      "compound": "Zinseszins",
+      "loan": "Kredit"
+    },
+    "cards": {
+      "currency": {
+        "title": "Währung",
+        "description": "Kurse werden automatisch alle 60 Sekunden aktualisiert."
+      },
+      "compound": {
+        "title": "Zinseszins",
+        "description": "Monatliche Einzahlungen werden unterstützt."
+      },
+      "loan": {
+        "title": "Kredit",
+        "description": "Zeigt Überzahlung und vollständigen Tilgungsplan."
+      }
+    },
+    "currency": {
+      "title": "Währungsrechner",
+      "description": "Live-Kurse. Schneller Tausch. Klares Ergebnis.",
+      "loadingRates": "Kurse werden geladen...",
+      "updatedAt": "Aktualisiert: {{time}}",
+      "amount": "Betrag",
+      "amountPlaceholder": "z. B. 100",
+      "invalidAmount": "Geben Sie eine gültige Zahl ein.",
+      "from": "Von",
+      "to": "Nach",
+      "swap": "Währungen tauschen",
+      "calculating": "Berechnung...",
+      "result": "Ergebnis",
+      "rateUnavailable": "Kurs nicht verfügbar",
+      "liveRate": "1 {{from}} = {{rate}} {{to}}",
+      "errorTitle": "Fehler",
+      "errorDescription": "Wechselkurse konnten nicht geladen werden"
+    },
+    "compound": {
+      "title": "Zinseszins",
+      "description": "Wachstum mit optionalen monatlichen Einzahlungen.",
+      "months": "{{count}} Monate",
+      "initialAmount": "Startbetrag",
+      "monthlyContribution": "Monatlicher Beitrag",
+      "annualRate": "Jährlicher Zinssatz (%)",
+      "duration": "Laufzeit (Jahre)",
+      "frequency": "Verzinsungshäufigkeit",
+      "frequencyOptions": {
+        "annual": "Jährlich",
+        "semiAnnual": "Halbjährlich",
+        "quarterly": "Vierteljährlich",
+        "monthly": "Monatlich",
+        "daily": "Täglich"
+      },
+      "calculate": "Berechnen",
+      "result": "Ergebnis",
+      "prompt": "Werte eingeben und auf „Berechnen“ klicken.",
+      "total": "Gesamt",
+      "invested": "Eingezahlt",
+      "income": "Ertrag"
+    },
+    "loan": {
+      "title": "Kreditrechner",
+      "description": "Vergleichen Sie Annuitäten- und differenzierte Zahlungen.",
+      "amount": "Kreditsumme",
+      "apr": "Zinssatz (%)",
+      "term": "Laufzeit (Monate)",
+      "tabs": {
+        "annuity": "Annuität",
+        "differential": "Differenziert"
+      },
+      "calculate": "Berechnen",
+      "totalPayment": "Gesamtzahlung",
+      "overpayment": "Überzahlung",
+      "months": "Monate",
+      "table": {
+        "number": "#",
+        "payment": "Zahlung",
+        "principal": "Tilgung",
+        "interest": "Zinsen",
+        "remaining": "Restschuld"
+      }
+    }
+  },
+
+  "crypto": {
+    "page": {
+      "title": "Krypto-Konverter",
+      "description": "Krypto sofort mit USD-basierten Kursen (CoinGecko) umrechnen. Aktualisierung alle 30 Sekunden."
+    },
+    "converter": {
+      "market": {
+        "live": "Live"
+      },
+      "title": "Umrechnen",
+      "description": "USD-basierte Echtzeitkurse • automatische Aktualisierung alle 30 Sek.",
+      "status": {
+        "refreshing": "Aktualisierung...",
+        "waiting": "Warten auf Daten...",
+        "updatedSeconds": "Vor {{count}} s aktualisiert"
+      },
+      "badges": {
+        "favorite": "Favorit",
+        "recent": "Zuletzt"
+      },
+      "labels": {
+        "youSend": "Sie senden",
+        "youGet": "Sie erhalten"
+      },
+      "swap": "Tauschen",
+      "favorite": {
+        "add": "Zu Favoriten hinzufügen",
+        "remove": "Aus Favoriten entfernen",
+        "toggle": "Favorit umschalten"
+      },
+      "result": "Ergebnis",
+      "copy": "Kopieren",
+      "sourceNote": "Kurse von CoinGecko. API-Limits und CORS-Einschränkungen können gelten.",
+      "rateLine": "1 {{symbol}} = {{value}} USD",
+      "toasts": {
+        "rateLimit": {
+          "title": "Anfragelimit erreicht",
+          "description": "CoinGecko drosselt Anfragen. Bitte warten Sie 30-60 Sekunden und versuchen Sie es erneut."
+        },
+        "requestFailed": {
+          "title": "Anfrage fehlgeschlagen",
+          "networkDescription": "Durch CORS oder einen Netzwerkfehler blockiert. Erwägen Sie einen Backend-Proxy für CoinGecko.",
+          "loadDescription": "Krypto-Kurse konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+        },
+        "copied": {
+          "title": "Kopiert"
+        },
+        "copyFailed": {
+          "title": "Kopieren fehlgeschlagen"
+        }
+      }
+    }
+  },
+
+  "matrix": {
+    "page": {
+      "title": "Matrix-Rechner",
+      "description": "Zeilen können durch Zeilenumbruch oder \";\" getrennt werden, Zahlen durch Leerzeichen. Beispiel:"
+    },
+    "inputs": {
+      "rows": "Zeilen",
+      "cols": "Spalten",
+      "fillTemplate": "Vorlage füllen",
+      "textMode": "Text",
+      "cellsMode": "Zellen",
+      "showDecimals": "Dezimalstellen anzeigen",
+      "matrixA": "Matrix A",
+      "matrixB": "Matrix B / Vektor b",
+      "matrixTextPlaceholder": "Beispiel: 1 2 3; 4 5 6; 7 8 9",
+      "vectorPlaceholder": "Beispiel (Vektor): 1 2 3"
+    },
+    "actions": {
+      "add": "A + B",
+      "subtract": "A − B",
+      "multiply": "A × B",
+      "transpose": "Transponieren(A)",
+      "determinant": "det(A)",
+      "solveGaussian": "Lösen (Gauss)",
+      "copyResult": "Ergebnis kopieren",
+      "clearAll": "Alles löschen"
+    },
+    "result": {
+      "title": "Ergebnis",
+      "placeholder": "Das Ergebnis erscheint hier"
+    },
+    "details": {
+      "summary": "Details (Determinante)",
+      "det2x2Title": "2×2-Determinante:",
+      "det3x3Title": "3×3-Determinante (Sarrus-Regel):",
+      "numericSubstitution": "Einsetzen der Zahlen:",
+      "limitedExplanation": "Eine detaillierte Schritt-für-Schritt-Erklärung ist derzeit nur für 1×1-, 2×2- und 3×3-Matrizen verfügbar."
+    },
+    "history": {
+      "title": "Verlauf",
+      "clear": "Verlauf löschen",
+      "matrixA": "A",
+      "matrixB": "B / b",
+      "result": "Ergebnis"
+    },
+    "toasts": {
+      "invalidMatrixFormat": "Ungültiges Matrixformat. Zeilen müssen durch Zeilenumbruch oder ';' und Zahlen durch Leerzeichen getrennt werden.",
+      "sameDimensionsRequired": "Für A ± B müssen die Matrizen die gleichen Dimensionen haben.",
+      "multiplyDimensionsRequired": "Für A × B muss die Anzahl der Spalten von A der Anzahl der Zeilen von B entsprechen.",
+      "squareRequired": "Die Matrix muss quadratisch sein, um die Determinante zu berechnen.",
+      "calculationError": "Berechnungsfehler.",
+      "invalidSystem": "Falsches Format oder falsche Dimensionen. A muss n×n sein und b muss n Elemente haben.",
+      "invalidVector": "Vektor b enthält ungültige Werte.",
+      "inconsistentSystem": "Das System ist inkonsistent oder hat unendlich viele Lösungen.",
+      "nothingToCopy": "Nichts zu kopieren.",
+      "copied": "Ergebnis in die Zwischenablage kopiert.",
+      "copyFailed": "Kopieren fehlgeschlagen."
     }
   }
 }

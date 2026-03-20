@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,8 +17,16 @@ import {
   History as HistoryIcon,
 } from "lucide-react";
 import { toast } from "sonner";
+import i18n from "@/i18n";
 
 type Matrix = number[][];
+type OperationKey =
+  | "add"
+  | "subtract"
+  | "multiply"
+  | "transpose"
+  | "determinant"
+  | "solveGaussian";
 
 type ResultData =
   | { kind: "matrix"; value: Matrix }
@@ -28,11 +37,14 @@ type InputMode = "text" | "cells";
 
 type HistoryEntry = {
   id: number;
-  operation: string;
+  operationKey: OperationKey;
   matrixA: Matrix;
   matrixB?: Matrix;
   result: ResultData;
 };
+
+const stepT = (key: string, options?: Record<string, unknown>) =>
+  i18n.t(key, options);
 
 function createEmptyCells(rows: number, cols: number): string[][] {
   return Array.from({ length: rows }, () =>
@@ -47,6 +59,7 @@ function resizeCells(prev: string[][], rows: number, cols: number): string[][] {
 }
 
 const MatrixCalculator = () => {
+  const { t } = useTranslation();
   const [matrixA, setMatrixA] = useState<string>("");
   const [matrixB, setMatrixB] = useState<string>("");
   const [rawResult, setRawResult] = useState<ResultData | null>(null);
@@ -195,7 +208,7 @@ const MatrixCalculator = () => {
       const [[a, b], [c, d]] = matrix;
       const det = a * d - b * c;
       const steps = [
-        "2×2 determinant:",
+        stepT("matrix.details.det2x2Title"),
         `|a  b|   |${a}  ${b}|`,
         `|c  d| = |${c}  ${d}|`,
         "",
@@ -223,7 +236,7 @@ const MatrixCalculator = () => {
       const det = sumPos - sumNeg;
 
       const steps = [
-        "3×3 determinant (Sarrus' rule):",
+        stepT("matrix.details.det3x3Title"),
         "",
         "      |a₁₁  a₁₂  a₁₃|",
         "A  =  |a₂₁  a₂₂  a₂₃|",
@@ -232,7 +245,7 @@ const MatrixCalculator = () => {
         "det(A) = a₁₁a₂₂a₃₃ + a₁₂a₂₃a₃₁ + a₁₃a₂₁a₃₂",
         "       − a₃₁a₂₂a₁₃ − a₃₂a₂₃a₁₁ − a₃₃a₂₁a₁₂",
         "",
-        "Numeric substitution:",
+        stepT("matrix.details.numericSubstitution"),
         `      |${a}  ${b}  ${c}|`,
         `A  =  |${d}  ${e}  ${f}|`,
         `      |${g}  ${h}  ${i}|`,
@@ -251,7 +264,7 @@ const MatrixCalculator = () => {
 
     const det = calculateDeterminant(matrix);
     const steps =
-      "Detailed step-by-step explanation is currently available only for 1×1, 2×2 and 3×3 matrices.\n" +
+      `${stepT("matrix.details.limitedExplanation")}\n` +
       `det(A) (computed recursively) = ${det}`;
     return { det, steps };
   };
@@ -290,7 +303,7 @@ const MatrixCalculator = () => {
   };
 
   const addHistoryEntry = (
-    operation: string,
+    operationKey: OperationKey,
     A: Matrix,
     B: Matrix | undefined,
     result: ResultData
@@ -298,7 +311,7 @@ const MatrixCalculator = () => {
     setHistory((prev) => [
       {
         id: Date.now() + Math.random(),
-        operation,
+        operationKey,
         matrixA: A,
         matrixB: B,
         result,
@@ -308,7 +321,7 @@ const MatrixCalculator = () => {
   };
 
   const handleOperation = (
-    operation: "add" | "subtract" | "multiply" | "transpose" | "determinant"
+    operation: Exclude<OperationKey, "solveGaussian">
   ) => {
     setDetails("");
 
@@ -329,9 +342,7 @@ const MatrixCalculator = () => {
         : parseMatrixFromCells(matrixBCells));
 
     if (!mA || (needsB && !mB)) {
-      toast.error(
-        "Invalid matrix format. Rows: separated by newline or ';', numbers separated by spaces."
-      );
+      toast.error(t("matrix.toasts.invalidMatrixFormat"));
       return;
     }
 
@@ -340,7 +351,7 @@ const MatrixCalculator = () => {
         mA.length === mB!.length && mA[0].length === mB![0].length;
 
       if ((operation === "add" || operation === "subtract") && !sameSize) {
-        toast.error("For A ± B matrices must have the same dimensions.");
+        toast.error(t("matrix.toasts.sameDimensionsRequired"));
         return;
       }
     }
@@ -356,7 +367,7 @@ const MatrixCalculator = () => {
             value: resultMatrix,
           };
           setRawResult(resultData);
-          addHistoryEntry("A + B", mA, mB || undefined, resultData);
+          addHistoryEntry("add", mA, mB || undefined, resultData);
           break;
         }
         case "subtract": {
@@ -368,14 +379,12 @@ const MatrixCalculator = () => {
             value: resultMatrix,
           };
           setRawResult(resultData);
-          addHistoryEntry("A − B", mA, mB || undefined, resultData);
+          addHistoryEntry("subtract", mA, mB || undefined, resultData);
           break;
         }
         case "multiply": {
           if (mA[0].length !== mB!.length) {
-            toast.error(
-              "For A × B: number of columns in A must equal number of rows in B."
-            );
+            toast.error(t("matrix.toasts.multiplyDimensionsRequired"));
             return;
           }
           const resultMatrix = mA.map((row) =>
@@ -388,7 +397,7 @@ const MatrixCalculator = () => {
             value: resultMatrix,
           };
           setRawResult(resultData);
-          addHistoryEntry("A × B", mA, mB || undefined, resultData);
+          addHistoryEntry("multiply", mA, mB || undefined, resultData);
           break;
         }
         case "transpose": {
@@ -400,25 +409,25 @@ const MatrixCalculator = () => {
             value: transposed,
           };
           setRawResult(resultData);
-          addHistoryEntry("Transpose(A)", mA, undefined, resultData);
+          addHistoryEntry("transpose", mA, undefined, resultData);
           break;
         }
         case "determinant": {
           if (mA.length !== mA[0].length) {
-            toast.error("Matrix must be square to compute the determinant.");
+            toast.error(t("matrix.toasts.squareRequired"));
             return;
           }
           const { det, steps } = calculateDeterminantWithSteps(mA);
           const resultData: ResultData = { kind: "scalar", value: det };
           setRawResult(resultData);
           setDetails(steps);
-          addHistoryEntry("det(A)", mA, undefined, resultData);
+          addHistoryEntry("determinant", mA, undefined, resultData);
           break;
         }
       }
     } catch (error) {
       console.error(error);
-      toast.error("Calculation error.");
+      toast.error(t("matrix.toasts.calculationError"));
     }
   };
 
@@ -436,22 +445,18 @@ const MatrixCalculator = () => {
         : parseVectorFromCells(matrixBCells);
 
     if (!A || !B || A.length !== B.length) {
-      toast.error(
-        "Incorrect format or dimensions. A must be n×n, b must have n elements."
-      );
+      toast.error(t("matrix.toasts.invalidSystem"));
       return;
     }
 
     if (B.some((v) => Number.isNaN(v))) {
-      toast.error("Vector b contains invalid values.");
+      toast.error(t("matrix.toasts.invalidVector"));
       return;
     }
 
     const solution = gaussianElimination(A, B);
     if (!solution) {
-      toast.error(
-        "The system is inconsistent or has infinitely many solutions."
-      );
+      toast.error(t("matrix.toasts.inconsistentSystem"));
       return;
     }
 
@@ -459,7 +464,7 @@ const MatrixCalculator = () => {
     setRawResult(resultData);
 
     const bAsMatrix: Matrix = B.map((v) => [v]);
-    addHistoryEntry("Solve (Gaussian)", A, bAsMatrix, resultData);
+    addHistoryEntry("solveGaussian", A, bAsMatrix, resultData);
   };
 
   const handleGenerateTemplate = () => {
@@ -493,14 +498,14 @@ const MatrixCalculator = () => {
         : "";
 
     if (!formattedResult) {
-      toast.error("Nothing to copy.");
+      toast.error(t("matrix.toasts.nothingToCopy"));
       return;
     }
     try {
       await navigator.clipboard.writeText(formattedResult);
-      toast.success("Result copied to clipboard.");
+      toast.success(t("matrix.toasts.copied"));
     } catch {
-      toast.error("Failed to copy.");
+      toast.error(t("matrix.toasts.copyFailed"));
     }
   };
 
@@ -602,16 +607,16 @@ const MatrixCalculator = () => {
     <div className="flex flex-col gap-6 py-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Matrix Calculator</h1>
+          <h1 className="text-2xl font-bold">{t("matrix.page.title")}</h1>
           <p className="text-sm text-muted-foreground">
-            Rows can be separated by newline or “;”, numbers by spaces. Example:{" "}
+            {t("matrix.page.description")}{" "}
             <code className="font-mono">1 2 3; 4 5 6; 7 8 9</code>
           </p>
         </div>
 
         <div className="flex flex-col items-start gap-2 text-sm md:items-end">
           <div className="flex flex-wrap items-center gap-2">
-            <Label htmlFor="rows">Rows</Label>
+            <Label htmlFor="rows">{t("matrix.inputs.rows")}</Label>
             <Input
               id="rows"
               type="number"
@@ -621,7 +626,7 @@ const MatrixCalculator = () => {
               value={rows}
               onChange={(e) => setRows(Number(e.target.value) || 1)}
             />
-            <Label htmlFor="cols">Cols</Label>
+            <Label htmlFor="cols">{t("matrix.inputs.cols")}</Label>
             <Input
               id="cols"
               type="number"
@@ -636,7 +641,7 @@ const MatrixCalculator = () => {
               size="sm"
               onClick={handleGenerateTemplate}
             >
-              Fill template
+              {t("matrix.inputs.fillTemplate")}
             </Button>
           </div>
 
@@ -651,7 +656,7 @@ const MatrixCalculator = () => {
                     : "bg-muted text-muted-foreground"
                 }`}
               >
-                Text
+                {t("matrix.inputs.textMode")}
               </button>
               <button
                 type="button"
@@ -662,7 +667,7 @@ const MatrixCalculator = () => {
                     : "bg-muted text-muted-foreground"
                 }`}
               >
-                Cells
+                {t("matrix.inputs.cellsMode")}
               </button>
             </div>
 
@@ -673,7 +678,7 @@ const MatrixCalculator = () => {
                 onChange={(e) => setShowDecimals(e.target.checked)}
                 className="h-4 w-4 rounded border-border bg-background"
               />
-              Display decimals
+              {t("matrix.inputs.showDecimals")}
             </label>
           </div>
         </div>
@@ -682,12 +687,12 @@ const MatrixCalculator = () => {
       <Card className="space-y-6 p-4">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <div className="text-sm font-semibold">Matrix A</div>
+            <div className="text-sm font-semibold">{t("matrix.inputs.matrixA")}</div>
             {inputMode === "text" ? (
               <Textarea
                 value={matrixA}
                 onChange={(e) => setMatrixA(e.target.value)}
-                placeholder="Example: 1 2 3; 4 5 6; 7 8 9"
+                placeholder={t("matrix.inputs.matrixTextPlaceholder")}
                 className="min-h-[140px] font-mono"
               />
             ) : (
@@ -696,12 +701,12 @@ const MatrixCalculator = () => {
           </div>
 
           <div className="space-y-2">
-            <div className="text-sm font-semibold">Matrix B / vector b</div>
+            <div className="text-sm font-semibold">{t("matrix.inputs.matrixB")}</div>
             {inputMode === "text" ? (
               <Textarea
                 value={matrixB}
                 onChange={(e) => setMatrixB(e.target.value)}
-                placeholder="Example (vector): 1 2 3"
+                placeholder={t("matrix.inputs.vectorPlaceholder")}
                 className="min-h-[140px] font-mono"
               />
             ) : (
@@ -712,30 +717,33 @@ const MatrixCalculator = () => {
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <Button onClick={() => handleOperation("add")}>
-            <Plus className="mr-2 h-4 w-4" />A + B
+            <Plus className="mr-2 h-4 w-4" />
+            {t("matrix.actions.add")}
           </Button>
           <Button onClick={() => handleOperation("subtract")}>
-            <Minus className="mr-2 h-4 w-4" />A − B
+            <Minus className="mr-2 h-4 w-4" />
+            {t("matrix.actions.subtract")}
           </Button>
           <Button onClick={() => handleOperation("multiply")}>
-            <X className="mr-2 h-4 w-4" />A × B
+            <X className="mr-2 h-4 w-4" />
+            {t("matrix.actions.multiply")}
           </Button>
           <Button
             variant="outline"
             onClick={() => handleOperation("transpose")}
           >
             <RotateCcw className="mr-2 h-4 w-4" />
-            Transpose(A)
+            {t("matrix.actions.transpose")}
           </Button>
           <Button
             variant="outline"
             onClick={() => handleOperation("determinant")}
           >
             <Hash className="mr-2 h-4 w-4" />
-            det(A)
+            {t("matrix.actions.determinant")}
           </Button>
           <Button variant="outline" onClick={solveGaussian}>
-            Solve (Gaussian)
+            {t("matrix.actions.solveGaussian")}
           </Button>
           <Button
             variant="ghost"
@@ -743,7 +751,7 @@ const MatrixCalculator = () => {
             className="col-span-1 justify-start md:col-span-2 md:justify-center"
           >
             <Share2 className="mr-2 h-4 w-4" />
-            Copy result
+            {t("matrix.actions.copyResult")}
           </Button>
           <Button
             variant="ghost"
@@ -751,17 +759,17 @@ const MatrixCalculator = () => {
             className="col-span-1 justify-start text-destructive md:col-span-2 md:justify-center"
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            Clear all
+            {t("matrix.actions.clearAll")}
           </Button>
         </div>
 
         <div className="space-y-2">
-          <div className="text-sm font-semibold">Result</div>
+          <div className="text-sm font-semibold">{t("matrix.result.title")}</div>
           <Textarea
             value={formattedResult}
             readOnly
             className="min-h-[140px] font-mono"
-            placeholder="Result will appear here"
+            placeholder={t("matrix.result.placeholder")}
           />
         </div>
 
@@ -769,7 +777,7 @@ const MatrixCalculator = () => {
           <div className="space-y-2">
             <details className="rounded-md border bg-muted/40 p-3">
               <summary className="cursor-pointer text-sm font-medium">
-                Details (Determinant)
+                {t("matrix.details.summary")}
               </summary>
               <ScrollArea className="mt-3 max-h-[360px] rounded-md border bg-card p-3">
                 <pre className="whitespace-pre text-sm font-mono">
@@ -785,7 +793,7 @@ const MatrixCalculator = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm font-semibold">
                 <HistoryIcon className="h-4 w-4" />
-                History
+                {t("matrix.history.title")}
               </div>
               <Button
                 variant="ghost"
@@ -793,7 +801,7 @@ const MatrixCalculator = () => {
                 className="text-xs text-muted-foreground"
                 onClick={() => setHistory([])}
               >
-                Clear history
+                {t("matrix.history.clear")}
               </Button>
             </div>
 
@@ -805,12 +813,12 @@ const MatrixCalculator = () => {
                     className="rounded-md bg-card p-3 text-xs font-mono"
                   >
                     <div className="mb-2 text-[0.7rem] font-semibold uppercase tracking-wide text-muted-foreground">
-                      {entry.operation}
+                      {t(`matrix.actions.${entry.operationKey}`)}
                     </div>
                     <div className="grid gap-3 md:grid-cols-3">
                       <div>
                         <div className="mb-1 text-[0.7rem] font-semibold text-muted-foreground">
-                          A
+                          {t("matrix.history.matrixA")}
                         </div>
                         <pre className="whitespace-pre-wrap">
                           {formatMatrix(entry.matrixA)}
@@ -819,7 +827,7 @@ const MatrixCalculator = () => {
                       {entry.matrixB && (
                         <div>
                           <div className="mb-1 text-[0.7rem] font-semibold text-muted-foreground">
-                            B / b
+                            {t("matrix.history.matrixB")}
                           </div>
                           <pre className="whitespace-pre-wrap">
                             {formatMatrix(entry.matrixB)}
@@ -828,7 +836,7 @@ const MatrixCalculator = () => {
                       )}
                       <div>
                         <div className="mb-1 text-[0.7rem] font-semibold text-muted-foreground">
-                          Result
+                          {t("matrix.history.result")}
                         </div>
                         <pre className="whitespace-pre-wrap">
                           {entry.result.kind === "matrix"

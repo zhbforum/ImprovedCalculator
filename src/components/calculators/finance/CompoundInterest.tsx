@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const fmt = (n: number, digits = 2) =>
-  new Intl.NumberFormat(undefined, {
+const fmt = (n: number, digits = 2, locale?: string) =>
+  new Intl.NumberFormat(locale, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   }).format(n);
@@ -21,6 +22,7 @@ const safeNum = (s: string) => {
 };
 
 const CompoundInterest = () => {
+  const { t, i18n } = useTranslation();
   const [principal, setPrincipal] = useState("1000");
   const [monthlyContribution, setMonthlyContribution] = useState("0");
   const [rate, setRate] = useState("5");
@@ -64,20 +66,26 @@ const CompoundInterest = () => {
     <div>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <div className="text-lg font-semibold">Compound interest</div>
+          <div className="text-lg font-semibold">
+            {t("finance.compound.title")}
+          </div>
           <div className="text-sm text-muted-foreground">
-            Growth with optional monthly contributions.
+            {t("finance.compound.description")}
           </div>
         </div>
 
         <div className="text-xs text-muted-foreground">
-          {result ? `${result.months} months` : "—"}
+          {result
+            ? t("finance.compound.months", { count: result.months })
+            : "—"}
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Initial amount</label>
+          <label className="text-sm font-medium">
+            {t("finance.compound.initialAmount")}
+          </label>
           <Input
             type="number"
             value={principal}
@@ -87,7 +95,9 @@ const CompoundInterest = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Monthly contribution</label>
+          <label className="text-sm font-medium">
+            {t("finance.compound.monthlyContribution")}
+          </label>
           <Input
             type="number"
             value={monthlyContribution}
@@ -98,7 +108,7 @@ const CompoundInterest = () => {
 
         <div className="space-y-2">
           <label className="text-sm font-medium">
-            Annual interest rate (%)
+            {t("finance.compound.annualRate")}
           </label>
           <Input
             type="number"
@@ -110,7 +120,9 @@ const CompoundInterest = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Duration (years)</label>
+          <label className="text-sm font-medium">
+            {t("finance.compound.duration")}
+          </label>
           <Input
             type="number"
             value={time}
@@ -121,17 +133,29 @@ const CompoundInterest = () => {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-medium">Compounding frequency</label>
+          <label className="text-sm font-medium">
+            {t("finance.compound.frequency")}
+          </label>
           <Select value={frequency} onValueChange={setFrequency}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">Annually</SelectItem>
-              <SelectItem value="2">Semi-annually</SelectItem>
-              <SelectItem value="4">Quarterly</SelectItem>
-              <SelectItem value="12">Monthly</SelectItem>
-              <SelectItem value="365">Daily</SelectItem>
+              <SelectItem value="1">
+                {t("finance.compound.frequencyOptions.annual")}
+              </SelectItem>
+              <SelectItem value="2">
+                {t("finance.compound.frequencyOptions.semiAnnual")}
+              </SelectItem>
+              <SelectItem value="4">
+                {t("finance.compound.frequencyOptions.quarterly")}
+              </SelectItem>
+              <SelectItem value="12">
+                {t("finance.compound.frequencyOptions.monthly")}
+              </SelectItem>
+              <SelectItem value="365">
+                {t("finance.compound.frequencyOptions.daily")}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -142,25 +166,30 @@ const CompoundInterest = () => {
             onClick={() => setCalculated(true)}
             disabled={!canCalc}
           >
-            Calculate
+            {t("finance.compound.calculate")}
           </Button>
         </div>
       </div>
 
       <div className="mt-5 rounded-xl border bg-background/30 backdrop-blur p-4">
-        <div className="text-sm text-muted-foreground">Result</div>
+        <div className="text-sm text-muted-foreground">
+          {t("finance.compound.result")}
+        </div>
 
         {!calculated || !result ? (
           <div className="mt-2 text-sm text-muted-foreground">
-            Enter values and press calculate.
+            {t("finance.compound.prompt")}
           </div>
         ) : (
           <div className="mt-2 space-y-1">
             <div className="text-xl font-semibold">
-              Total: {fmt(result.total)}
+              {t("finance.compound.total")}: {fmt(result.total, 2, i18n.language)}
             </div>
             <div className="text-sm text-muted-foreground">
-              Invested: {fmt(result.invested)} · Income: {fmt(result.income)}
+              {t("finance.compound.invested")}:{" "}
+              {fmt(result.invested, 2, i18n.language)} ·{" "}
+              {t("finance.compound.income")}:{" "}
+              {fmt(result.income, 2, i18n.language)}
             </div>
           </div>
         )}

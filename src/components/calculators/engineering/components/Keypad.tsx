@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Delete } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   ADVANCED_BUTTONS,
   BOTTOM_ROW,
@@ -28,6 +29,8 @@ export const Keypad = ({
   onFunctionClick,
   onCalculate,
 }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-4 gap-2">
@@ -36,7 +39,9 @@ export const Keypad = ({
           onClick={onToggleRadians}
           className={`col-span-2 ${UI.topBtnClass}`}
         >
-          {isRadians ? "Radians" : "Degrees"}
+          {isRadians
+            ? t("engineering.keypad.radians")
+            : t("engineering.keypad.degrees")}
         </Button>
 
         <Button variant="outline" onClick={onDelete} className="h-12">

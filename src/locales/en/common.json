@@ -14,6 +14,11 @@
     }
   },
 
+  "footer": {
+    "copyrightPrefix": "© {{year}} Improved Calculator · Developer",
+    "viewOnGitHub": "View on GitHub"
+  },
+
   "home": {
     "heroTitle": "Multifunctional calculator",
     "heroSubtitle": "A powerful tool for mathematical, financial and engineering calculations",
@@ -28,23 +33,56 @@
         "title": "Engineering calculator",
         "description": "Perform complex math calculations, including trigonometric functions"
       },
-      "graph": { "title": "Graphing calculator", "description": "Build function graphs with the ability to scale and customize" },
-      "finance": { "title": "Financial calculator", "description": "Calculate loans, investments and convert currencies" },
-      "matrix": { "title": "Matrix calculator", "description": "Perform operations with matrices: addition, multiplication, transposition" },
-      "programming": { "title": "Programmable calculator", "description": "A calculator that accepts small programs" },
-      "crypto": { "title": "Cryptocurrency calculator", "description": "A calculator which can show your crypto price in real time" }
+      "graph": {
+        "title": "Graphing calculator",
+        "description": "Build function graphs with the ability to scale and customize"
+      },
+      "finance": {
+        "title": "Financial calculator",
+        "description": "Calculate loans, investments and convert currencies"
+      },
+      "matrix": {
+        "title": "Matrix calculator",
+        "description": "Perform operations with matrices: addition, multiplication, transposition"
+      },
+      "programming": {
+        "title": "Programmable calculator",
+        "description": "A calculator that accepts small programs",
+        "status": "Currently not working"
+      },
+      "crypto": {
+        "title": "Cryptocurrency calculator",
+        "description": "A calculator which can show your crypto price in real time"
+      }
+    }
+  },
+
+  "programming": {
+    "page": {
+      "statusLabel": "Status",
+      "title": "This feature is currently not working.",
+      "description": "The current implementation will be replaced with a new execution / sandbox approach in a future update."
     }
   },
 
   "engineering": {
     "page": { "title": "Engineering Calculator" },
+    "calculator": { "title": "Calculator" },
     "input": { "placeholder": "Enter an expression" },
-    "result": { "label": "Result" },
+    "result": {
+      "label": "Result",
+      "error": "Error"
+    },
     "history": { "empty": "Calculation history will appear here." },
 
     "rightPanel": {
       "tabs": { "history": "History", "shortcuts": "Shortcuts" },
       "actions": { "clear": "Clear" }
+    },
+
+    "keypad": {
+      "radians": "Radians",
+      "degrees": "Degrees"
     },
 
     "shortcuts": {
@@ -60,6 +98,241 @@
         "focusInput": "Focus input",
         "toggleRadDeg": "Toggle rad/deg"
       }
+    }
+  },
+
+  "graph": {
+    "page": {
+      "title": "Graphing calculator",
+      "description": "Enter mathematical functions to create graphs. Trigonometric functions are supported (sin, cos, tan), exponents (e^x), logarithms (log, ln), powers (x^2) and other mathematical expressions."
+    },
+    "controls": {
+      "showGrid": "Show grid",
+      "showAxis": "Show axis",
+      "expressionPlaceholder": "Example: sin(x) or x^2 + 2*x + 1",
+      "addGraph": "Add graph",
+      "color": "Color",
+      "thickness": "Thickness",
+      "thicknessValue": "Thickness: {{value}}",
+      "hideGraph": "Hide graph",
+      "showGraph": "Show graph",
+      "removeGraph": "Remove graph"
+    },
+    "colors": {
+      "blue": "Blue",
+      "red": "Red",
+      "green": "Green",
+      "purple": "Purple",
+      "orange": "Orange"
+    },
+    "lineWidths": {
+      "thin": "Thin",
+      "medium": "Medium",
+      "thick": "Thick",
+      "veryThick": "Very thick"
+    }
+  },
+
+  "finance": {
+    "page": {
+      "title": "Finance Calculator",
+      "description": "Currency conversion, compound growth, and loan payments in one place."
+    },
+    "tabs": {
+      "currency": "Currency",
+      "compound": "Compound",
+      "loan": "Loan"
+    },
+    "cards": {
+      "currency": {
+        "title": "Currency",
+        "description": "Rates refresh automatically every 60 seconds."
+      },
+      "compound": {
+        "title": "Compound",
+        "description": "Compound supports monthly contribution."
+      },
+      "loan": {
+        "title": "Loan",
+        "description": "Loan shows overpayment and full schedule."
+      }
+    },
+    "currency": {
+      "title": "Currency converter",
+      "description": "Live rates. Quick swap. Clean result.",
+      "loadingRates": "Loading rates...",
+      "updatedAt": "Updated: {{time}}",
+      "amount": "Amount",
+      "amountPlaceholder": "e.g. 100",
+      "invalidAmount": "Enter a valid number.",
+      "from": "From",
+      "to": "To",
+      "swap": "Swap currencies",
+      "calculating": "Calculating...",
+      "result": "Result",
+      "rateUnavailable": "Rate unavailable",
+      "liveRate": "1 {{from}} = {{rate}} {{to}}",
+      "errorTitle": "Error",
+      "errorDescription": "Failed to load exchange rates"
+    },
+    "compound": {
+      "title": "Compound interest",
+      "description": "Growth with optional monthly contributions.",
+      "months": "{{count}} months",
+      "initialAmount": "Initial amount",
+      "monthlyContribution": "Monthly contribution",
+      "annualRate": "Annual interest rate (%)",
+      "duration": "Duration (years)",
+      "frequency": "Compounding frequency",
+      "frequencyOptions": {
+        "annual": "Annually",
+        "semiAnnual": "Semi-annually",
+        "quarterly": "Quarterly",
+        "monthly": "Monthly",
+        "daily": "Daily"
+      },
+      "calculate": "Calculate",
+      "result": "Result",
+      "prompt": "Enter values and press calculate.",
+      "total": "Total",
+      "invested": "Invested",
+      "income": "Income"
+    },
+    "loan": {
+      "title": "Loan calculator",
+      "description": "Compare annuity and differentiated payments.",
+      "amount": "Loan amount",
+      "apr": "APR (%)",
+      "term": "Term (months)",
+      "tabs": {
+        "annuity": "Annuity",
+        "differential": "Differentiated"
+      },
+      "calculate": "Calculate",
+      "totalPayment": "Total payment",
+      "overpayment": "Overpayment",
+      "months": "Months",
+      "table": {
+        "number": "#",
+        "payment": "Payment",
+        "principal": "Principal",
+        "interest": "Interest",
+        "remaining": "Remaining"
+      }
+    }
+  },
+
+  "crypto": {
+    "page": {
+      "title": "Crypto Converter",
+      "description": "Convert crypto instantly using USD-based rates (CoinGecko). Updates every 30 seconds."
+    },
+    "converter": {
+      "market": {
+        "live": "Live"
+      },
+      "title": "Convert",
+      "description": "Real-time USD-based rates • auto refresh every 30s",
+      "status": {
+        "refreshing": "Refreshing...",
+        "waiting": "Waiting for data...",
+        "updatedSeconds": "Updated {{count}}s ago"
+      },
+      "badges": {
+        "favorite": "Favorite",
+        "recent": "Recent"
+      },
+      "labels": {
+        "youSend": "You send",
+        "youGet": "You get"
+      },
+      "swap": "Swap",
+      "favorite": {
+        "add": "Add to favorites",
+        "remove": "Remove from favorites",
+        "toggle": "Toggle favorite"
+      },
+      "result": "Result",
+      "copy": "Copy",
+      "sourceNote": "Rates by CoinGecko. API rate limits and CORS restrictions may apply.",
+      "rateLine": "1 {{symbol}} = {{value}} USD",
+      "toasts": {
+        "rateLimit": {
+          "title": "Rate limit reached",
+          "description": "CoinGecko is throttling requests. Please wait 30-60 seconds and try again."
+        },
+        "requestFailed": {
+          "title": "Request failed",
+          "networkDescription": "Blocked by CORS / network error. Consider using a backend proxy for CoinGecko.",
+          "loadDescription": "Failed to load crypto rates. Please try again later."
+        },
+        "copied": {
+          "title": "Copied"
+        },
+        "copyFailed": {
+          "title": "Copy failed"
+        }
+      }
+    }
+  },
+
+  "matrix": {
+    "page": {
+      "title": "Matrix Calculator",
+      "description": "Rows can be separated by newline or \";\", numbers by spaces. Example:"
+    },
+    "inputs": {
+      "rows": "Rows",
+      "cols": "Cols",
+      "fillTemplate": "Fill template",
+      "textMode": "Text",
+      "cellsMode": "Cells",
+      "showDecimals": "Display decimals",
+      "matrixA": "Matrix A",
+      "matrixB": "Matrix B / vector b",
+      "matrixTextPlaceholder": "Example: 1 2 3; 4 5 6; 7 8 9",
+      "vectorPlaceholder": "Example (vector): 1 2 3"
+    },
+    "actions": {
+      "add": "A + B",
+      "subtract": "A − B",
+      "multiply": "A × B",
+      "transpose": "Transpose(A)",
+      "determinant": "det(A)",
+      "solveGaussian": "Solve (Gaussian)",
+      "copyResult": "Copy result",
+      "clearAll": "Clear all"
+    },
+    "result": {
+      "title": "Result",
+      "placeholder": "Result will appear here"
+    },
+    "details": {
+      "summary": "Details (Determinant)",
+      "det2x2Title": "2×2 determinant:",
+      "det3x3Title": "3×3 determinant (Sarrus' rule):",
+      "numericSubstitution": "Numeric substitution:",
+      "limitedExplanation": "Detailed step-by-step explanation is currently available only for 1×1, 2×2 and 3×3 matrices."
+    },
+    "history": {
+      "title": "History",
+      "clear": "Clear history",
+      "matrixA": "A",
+      "matrixB": "B / b",
+      "result": "Result"
+    },
+    "toasts": {
+      "invalidMatrixFormat": "Invalid matrix format. Rows must be separated by newline or ';', and numbers by spaces.",
+      "sameDimensionsRequired": "For A ± B, matrices must have the same dimensions.",
+      "multiplyDimensionsRequired": "For A × B, the number of columns in A must equal the number of rows in B.",
+      "squareRequired": "Matrix must be square to compute the determinant.",
+      "calculationError": "Calculation error.",
+      "invalidSystem": "Incorrect format or dimensions. A must be n×n, and b must have n elements.",
+      "invalidVector": "Vector b contains invalid values.",
+      "inconsistentSystem": "The system is inconsistent or has infinitely many solutions.",
+      "nothingToCopy": "Nothing to copy.",
+      "copied": "Result copied to clipboard.",
+      "copyFailed": "Failed to copy."
     }
   }
 }

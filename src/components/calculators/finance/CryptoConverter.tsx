@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -102,8 +103,8 @@ const fetchPopularRates = async () => {
   }
 };
 
-const fmt = (v: number, max = 8) =>
-  new Intl.NumberFormat(undefined, { maximumFractionDigits: max }).format(v);
+const fmt = (v: number, max = 8, locale?: string) =>
+  new Intl.NumberFormat(locale, { maximumFractionDigits: max }).format(v);
 
 const safeParse = (value: string) => {
   const n = Number(value);
@@ -149,6 +150,7 @@ const getStatus = (err: unknown) =>
   err instanceof ApiError ? err.status : undefined;
 
 const CryptoConverter = () => {
+  const { t, i18n } = useTranslation();
   const [amount, setAmount] = useState<string>("1");
   const [fromCrypto, setFromCrypto] = useState("BTC");
   const [toCrypto, setToCrypto] = useState("ETH");
@@ -293,31 +295,33 @@ const CryptoConverter = () => {
     lastToastKeyRef.current = key;
 
     if (status === 429) {
-      toast.warning("Rate limit reached", {
-        description:
-          "CoinGecko is throttling requests. Please wait 30–60 seconds and try again.",
+      toast.warning(t("crypto.converter.toasts.rateLimit.title"), {
+        description: t("crypto.converter.toasts.rateLimit.description"),
       });
       return;
     }
 
-    toast.error("Request failed", {
+    toast.error(t("crypto.converter.toasts.requestFailed.title"), {
       description:
         status === undefined
-          ? "Blocked by CORS / network error. Consider using a backend proxy for CoinGecko."
-          : "Failed to load crypto rates. Please try again later.",
+          ? t("crypto.converter.toasts.requestFailed.networkDescription")
+          : t("crypto.converter.toasts.requestFailed.loadDescription"),
     });
-  }, [err]);
+  }, [err, t]);
 
   const copyResult = async () => {
-    const text = `${fmt(numericAmount)} ${fromCrypto} = ${fmt(
+    const text = `${fmt(numericAmount, 8, i18n.language)} ${fromCrypto} = ${fmt(
       converted,
-      8
+      8,
+      i18n.language
     )} ${toCrypto}`;
     try {
       await navigator.clipboard.writeText(text);
-      toast.success("Copied", { description: text });
+      toast.success(t("crypto.converter.toasts.copied.title"), {
+        description: text,
+      });
     } catch {
-      toast.error("Copy failed");
+      toast.error(t("crypto.converter.toasts.copyFailed.title"));
     }
   };
 
@@ -361,10 +365,10 @@ const CryptoConverter = () => {
                 ) : (
                   <div className="mt-2">
                     <div className="text-2xl font-bold">
-                      {usd ? fmt(usd, 2) : "—"}
+                      {usd ? fmt(usd, 2, i18n.language) : "—"}
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">
-                      Live
+                      {t("crypto.converter.market.live")}
                     </div>
                   </div>
                 )}
@@ -380,9 +384,11 @@ const CryptoConverter = () => {
         <div className="relative p-6 md:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-xl font-semibold">Convert</h2>
+              <h2 className="text-xl font-semibold">
+                {t("crypto.converter.title")}
+              </h2>
               <p className="text-sm text-muted-foreground">
-                Real-time USD-based rates • auto refresh every 30s
+                {t("crypto.converter.description")}
               </p>
             </div>
 
@@ -391,10 +397,12 @@ const CryptoConverter = () => {
                 <RefreshCcw className="h-4 w-4" />
                 <span>
                   {isLoading
-                    ? "refreshing..."
+                    ? t("crypto.converter.status.refreshing")
                     : secondsAgo === null
-                    ? "waiting for data..."
-                    : `updated ${secondsAgo}s ago`}
+                    ? t("crypto.converter.status.waiting")
+                    : t("crypto.converter.status.updatedSeconds", {
+                        count: secondsAgo,
+                      })}
                 </span>
               </div>
 
@@ -415,7 +423,7 @@ const CryptoConverter = () => {
                   type="button"
                   onClick={() => applyPair(p)}
                   className="h-8 rounded-full border bg-background/60 px-3 text-xs hover:bg-background transition"
-                  title="Favorite"
+                  title={t("crypto.converter.badges.favorite")}
                 >
                   {p.from} → {p.to}
                 </button>
@@ -432,7 +440,7 @@ const CryptoConverter = () => {
                     type="button"
                     onClick={() => applyPair(p)}
                     className="h-8 rounded-full border bg-background/40 px-3 text-xs hover:bg-background transition"
-                    title="Recent"
+                    title={t("crypto.converter.badges.recent")}
                   >
                     {p.from} → {p.to}
                   </button>
@@ -447,7 +455,9 @@ const CryptoConverter = () => {
             ].join(" ")}
           >
             <div className="space-y-3">
-              <label className="text-sm font-medium">You send</label>
+              <label className="text-sm font-medium">
+                {t("crypto.converter.labels.youSend")}
+              </label>
 
               <div className="grid grid-cols-[1fr_160px] gap-3">
                 <Input
@@ -502,7 +512,12 @@ const CryptoConverter = () => {
                   <TrendingDown className="h-4 w-4" />
                 ) : null}
                 <span>
-                  {fromUsd ? `1 ${fromCrypto} = ${fmt(fromUsd, 2)} USD` : "—"}
+                  {fromUsd
+                    ? t("crypto.converter.rateLine", {
+                        symbol: fromCrypto,
+                        value: fmt(fromUsd, 2, i18n.language),
+                      })
+                    : "—"}
                 </span>
               </div>
             </div>
@@ -512,8 +527,8 @@ const CryptoConverter = () => {
                 type="button"
                 onClick={swap}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border bg-background/70 hover:bg-background transition"
-                aria-label="Swap currencies"
-                title="Swap"
+                aria-label={t("crypto.converter.swap")}
+                title={t("crypto.converter.swap")}
               >
                 <ArrowLeftRight className="h-5 w-5" />
               </button>
@@ -522,9 +537,11 @@ const CryptoConverter = () => {
                 type="button"
                 onClick={toggleFavorite}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border bg-background/70 hover:bg-background transition"
-                aria-label="Toggle favorite"
+                aria-label={t("crypto.converter.favorite.toggle")}
                 title={
-                  isFavorite ? "Remove from favorites" : "Add to favorites"
+                  isFavorite
+                    ? t("crypto.converter.favorite.remove")
+                    : t("crypto.converter.favorite.add")
                 }
               >
                 {isFavorite ? (
@@ -536,7 +553,9 @@ const CryptoConverter = () => {
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-medium">You get</label>
+              <label className="text-sm font-medium">
+                {t("crypto.converter.labels.youGet")}
+              </label>
 
               <Select value={toCrypto} onValueChange={setToCrypto}>
                 <SelectTrigger className="h-11">
@@ -578,7 +597,12 @@ const CryptoConverter = () => {
                   <TrendingDown className="h-4 w-4" />
                 ) : null}
                 <span>
-                  {toUsd ? `1 ${toCrypto} = ${fmt(toUsd, 2)} USD` : "—"}
+                  {toUsd
+                    ? t("crypto.converter.rateLine", {
+                        symbol: toCrypto,
+                        value: fmt(toUsd, 2, i18n.language),
+                      })
+                    : "—"}
                 </span>
               </div>
             </div>
@@ -592,14 +616,16 @@ const CryptoConverter = () => {
               </div>
             ) : (
               <>
-                <div className="text-sm text-muted-foreground">Result</div>
+                <div className="text-sm text-muted-foreground">
+                  {t("crypto.converter.result")}
+                </div>
                 <div className="mt-1 flex flex-wrap items-center gap-3">
                   <div className="text-2xl md:text-3xl font-bold tracking-tight">
-                    {fmt(numericAmount)} {fromCrypto}{" "}
+                    {fmt(numericAmount, 8, i18n.language)} {fromCrypto}{" "}
                     <span className="text-muted-foreground font-semibold">
                       =
                     </span>{" "}
-                    {fmt(converted, 8)} {toCrypto}
+                    {fmt(converted, 8, i18n.language)} {toCrypto}
                   </div>
 
                   <button
@@ -607,10 +633,10 @@ const CryptoConverter = () => {
                     onClick={copyResult}
                     disabled={!hasRates}
                     className="inline-flex h-9 items-center gap-2 rounded-full border bg-background/70 px-3 text-sm hover:bg-background transition disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Copy result"
+                    title={t("crypto.converter.copy")}
                   >
                     <Copy className="h-4 w-4" />
-                    Copy
+                    {t("crypto.converter.copy")}
                   </button>
                 </div>
               </>
@@ -618,7 +644,7 @@ const CryptoConverter = () => {
           </div>
 
           <div className="mt-3 text-xs text-muted-foreground">
-            Rates by CoinGecko. API rate limits and CORS restrictions may apply.
+            {t("crypto.converter.sourceNote")}
           </div>
         </div>
       </Card>

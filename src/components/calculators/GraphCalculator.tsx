@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import FunctionsList from "./graph/FunctionsList";
 import GraphCanvas from "./graph/GraphCanvas";
@@ -11,6 +12,7 @@ interface GraphFunction {
 }
 
 const GraphCalculator = () => {
+  const { t } = useTranslation();
   const [functions, setFunctions] = useState<GraphFunction[]>([
     { expression: "x^2", color: "#2563eb", lineWidth: 2, visible: true },
   ]);
@@ -20,18 +22,18 @@ const GraphCalculator = () => {
   const [showAxis, setShowAxis] = useState(true);
 
   const colors = [
-    { name: "Blue", value: "#2563eb" },
-    { name: "Red", value: "#dc2626" },
-    { name: "Green", value: "#16a34a" },
-    { name: "Purple", value: "#9333ea" },
-    { name: "Orange", value: "#ea580c" },
+    { labelKey: "graph.colors.blue", value: "#2563eb" },
+    { labelKey: "graph.colors.red", value: "#dc2626" },
+    { labelKey: "graph.colors.green", value: "#16a34a" },
+    { labelKey: "graph.colors.purple", value: "#9333ea" },
+    { labelKey: "graph.colors.orange", value: "#ea580c" },
   ];
 
   const lineWidths = [
-    { name: "Thin", value: 1 },
-    { name: "Medium", value: 2 },
-    { name: "Thick", value: 3 },
-    { name: "Very thick", value: 4 },
+    { labelKey: "graph.lineWidths.thin", value: 1 },
+    { labelKey: "graph.lineWidths.medium", value: 2 },
+    { labelKey: "graph.lineWidths.thick", value: 3 },
+    { labelKey: "graph.lineWidths.veryThick", value: 4 },
   ];
 
   const handleAddFunction = () => {
@@ -80,13 +82,10 @@ const GraphCalculator = () => {
         <div className="space-y-6">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              Graphing calculator
+              {t("graph.page.title")}
             </h1>
             <p className="text-sm text-gray-500">
-              Enter mathematical functions to create graphs. Trigonometric
-              functions are supported (sin, cos, tan), exponents (e^x),
-              logarithms (log, ln), powers (x^2) and other mathematical
-              expressions.
+              {t("graph.page.description")}
             </p>
           </div>
 

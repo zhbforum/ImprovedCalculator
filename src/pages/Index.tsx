@@ -12,6 +12,7 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedGlowBackground from "@/components/backgrounds/AnimatedGlowBackground";
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { glassCard } from "@/lib/styles";
 
@@ -30,6 +31,7 @@ const Index = () => {
     id: FeatureId;
     icon: JSX.Element;
     link: string;
+    statusKey?: string;
   }> = [
     {
       id: "engineering",
@@ -47,6 +49,7 @@ const Index = () => {
       id: "programming",
       icon: <CodeXml className="h-8 w-8" />,
       link: "/programming",
+      statusKey: "home.features.programming.status",
     },
     {
       id: "crypto",
@@ -85,7 +88,17 @@ const Index = () => {
                 <Card
                   className={`${glassCard} p-6 h-full cursor-pointer transition hover:bg-background/45 hover:shadow-lg`}
                 >
-                  <div className="mb-4 text-primary">{feature.icon}</div>
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <div className="text-primary">{feature.icon}</div>
+                    {feature.statusKey ? (
+                      <Badge
+                        variant="destructive"
+                        className="px-3 py-1 text-[0.65rem] leading-tight"
+                      >
+                        {t(feature.statusKey)}
+                      </Badge>
+                    ) : null}
+                  </div>
                   <h3 className="text-lg font-semibold mb-2">
                     {t(`home.features.${feature.id}.title`)}
                   </h3>

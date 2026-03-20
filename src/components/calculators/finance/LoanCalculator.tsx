@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,8 +16,8 @@ type LoanMode = "annuity" | "differential";
 const isLoanMode = (v: string): v is LoanMode =>
   v === "annuity" || v === "differential";
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(n);
+const fmt = (n: number, locale?: string) =>
+  new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(n);
 
 const safeNum = (s: string) => {
   const n = Number(s);
@@ -24,6 +25,7 @@ const safeNum = (s: string) => {
 };
 
 const LoanCalculator = () => {
+  const { t, i18n } = useTranslation();
   const [amount, setAmount] = useState("1000000");
   const [rate, setRate] = useState("10");
   const [term, setTerm] = useState("12");
@@ -109,15 +111,17 @@ const LoanCalculator = () => {
   return (
     <div>
       <div className="space-y-1">
-        <div className="text-lg font-semibold">Loan calculator</div>
+        <div className="text-lg font-semibold">{t("finance.loan.title")}</div>
         <div className="text-sm text-muted-foreground">
-          Compare annuity and differentiated payments.
+          {t("finance.loan.description")}
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-3">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Loan amount</label>
+          <label className="text-sm font-medium">
+            {t("finance.loan.amount")}
+          </label>
           <Input
             type="number"
             value={amount}
@@ -127,7 +131,9 @@ const LoanCalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">APR (%)</label>
+          <label className="text-sm font-medium">
+            {t("finance.loan.apr")}
+          </label>
           <Input
             type="number"
             value={rate}
@@ -138,7 +144,9 @@ const LoanCalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Term (months)</label>
+          <label className="text-sm font-medium">
+            {t("finance.loan.term")}
+          </label>
           <Input
             type="number"
             value={term}
@@ -161,25 +169,25 @@ const LoanCalculator = () => {
               value="annuity"
               className="rounded-lg data-[state=active]:bg-background/60 data-[state=active]:backdrop-blur"
             >
-              Annuity
+              {t("finance.loan.tabs.annuity")}
             </TabsTrigger>
             <TabsTrigger
               value="differential"
               className="rounded-lg data-[state=active]:bg-background/60 data-[state=active]:backdrop-blur"
             >
-              Differentiated
+              {t("finance.loan.tabs.differential")}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="annuity" className="mt-3">
             <Button onClick={calculate} className="w-full" disabled={!canCalc}>
-              Calculate
+              {t("finance.loan.calculate")}
             </Button>
           </TabsContent>
 
           <TabsContent value="differential" className="mt-3">
             <Button onClick={calculate} className="w-full" disabled={!canCalc}>
-              Calculate
+              {t("finance.loan.calculate")}
             </Button>
           </TabsContent>
         </Tabs>
@@ -189,17 +197,27 @@ const LoanCalculator = () => {
         <div className="mt-5 space-y-4">
           <div className="grid gap-3 md:grid-cols-3">
             <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
-              <div className="text-sm text-muted-foreground">Total payment</div>
-              <div className="text-lg font-semibold">{fmt(totalPayment)}</div>
+              <div className="text-sm text-muted-foreground">
+                {t("finance.loan.totalPayment")}
+              </div>
+              <div className="text-lg font-semibold">
+                {fmt(totalPayment, i18n.language)}
+              </div>
             </div>
 
             <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
-              <div className="text-sm text-muted-foreground">Overpayment</div>
-              <div className="text-lg font-semibold">{fmt(overpayment)}</div>
+              <div className="text-sm text-muted-foreground">
+                {t("finance.loan.overpayment")}
+              </div>
+              <div className="text-lg font-semibold">
+                {fmt(overpayment, i18n.language)}
+              </div>
             </div>
 
             <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
-              <div className="text-sm text-muted-foreground">Months</div>
+              <div className="text-sm text-muted-foreground">
+                {t("finance.loan.months")}
+              </div>
               <div className="text-lg font-semibold">{schedule.length}</div>
             </div>
           </div>
@@ -208,21 +226,33 @@ const LoanCalculator = () => {
             <table className="min-w-full text-sm">
               <thead className="bg-muted/25">
                 <tr className="border-b">
-                  <th className="text-left p-2">№</th>
-                  <th className="text-left p-2">Payment</th>
-                  <th className="text-left p-2">Principal</th>
-                  <th className="text-left p-2">Interest</th>
-                  <th className="text-left p-2">Remaining</th>
+                  <th className="text-left p-2">
+                    {t("finance.loan.table.number")}
+                  </th>
+                  <th className="text-left p-2">
+                    {t("finance.loan.table.payment")}
+                  </th>
+                  <th className="text-left p-2">
+                    {t("finance.loan.table.principal")}
+                  </th>
+                  <th className="text-left p-2">
+                    {t("finance.loan.table.interest")}
+                  </th>
+                  <th className="text-left p-2">
+                    {t("finance.loan.table.remaining")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {schedule.map((row, idx) => (
                   <tr key={idx} className="border-b last:border-b-0">
                     <td className="p-2">{idx + 1}</td>
-                    <td className="p-2">{fmt(row.payment)}</td>
-                    <td className="p-2">{fmt(row.principal)}</td>
-                    <td className="p-2">{fmt(row.interest)}</td>
-                    <td className="p-2">{fmt(row.remainingBalance)}</td>
+                    <td className="p-2">{fmt(row.payment, i18n.language)}</td>
+                    <td className="p-2">{fmt(row.principal, i18n.language)}</td>
+                    <td className="p-2">{fmt(row.interest, i18n.language)}</td>
+                    <td className="p-2">
+                      {fmt(row.remainingBalance, i18n.language)}
+                    </td>
                   </tr>
                 ))}
               </tbody>

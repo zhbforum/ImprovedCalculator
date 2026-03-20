@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,13 +40,14 @@ const clampNumberString = (v: string) => {
   return cleaned;
 };
 
-const formatMoney = (n: number, digits = 2) =>
-  new Intl.NumberFormat(undefined, {
+const formatMoney = (n: number, digits = 2, locale?: string) =>
+  new Intl.NumberFormat(locale, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   }).format(n);
 
 const CurrencyConverter = () => {
+  const { t, i18n } = useTranslation();
   const [amount, setAmount] = useState<string>("1000");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
@@ -68,11 +70,11 @@ const CurrencyConverter = () => {
   useEffect(() => {
     if (!error) return;
     toast({
-      title: "Error",
-      description: "Failed to load exchange rates",
+      title: t("finance.currency.errorTitle"),
+      description: t("finance.currency.errorDescription"),
       variant: "destructive",
     });
-  }, [error, toast]);
+  }, [error, t, toast]);
 
   const amountNum = useMemo(() => {
     const n = Number(amount);
@@ -94,11 +96,13 @@ const CurrencyConverter = () => {
   const updatedLabel = useMemo(() => {
     if (!dataUpdatedAt) return null;
     const d = new Date(dataUpdatedAt);
-    return `Updated: ${d.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    })}`;
-  }, [dataUpdatedAt]);
+    return t("finance.currency.updatedAt", {
+      time: d.toLocaleTimeString(i18n.language, {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    });
+  }, [dataUpdatedAt, i18n.language, t]);
 
   const amountInvalid = amount !== "" && !Number.isFinite(amountNum);
 
@@ -106,30 +110,36 @@ const CurrencyConverter = () => {
     <div>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <div className="text-lg font-semibold">Currency converter</div>
+          <div className="text-lg font-semibold">
+            {t("finance.currency.title")}
+          </div>
           <div className="text-sm text-muted-foreground">
-            Live rates. Quick swap. Clean result.
+            {t("finance.currency.description")}
           </div>
         </div>
 
         <div className="text-xs text-muted-foreground">
-          {isLoading ? "Loading rates…" : updatedLabel}
+          {isLoading ? t("finance.currency.loadingRates") : updatedLabel}
         </div>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Amount</label>
+          <label className="text-sm font-medium">
+            {t("finance.currency.amount")}
+          </label>
           <Input
             type="text"
             inputMode="decimal"
             value={amount}
             onChange={(e) => setAmount(clampNumberString(e.target.value))}
-            placeholder="e.g. 100"
+            placeholder={t("finance.currency.amountPlaceholder")}
             aria-invalid={amountInvalid}
           />
           {amountInvalid && (
-            <p className="text-xs text-destructive">Enter a valid number.</p>
+            <p className="text-xs text-destructive">
+              {t("finance.currency.invalidAmount")}
+            </p>
           )}
 
           <div className="flex flex-wrap gap-2 pt-1">
@@ -151,7 +161,9 @@ const CurrencyConverter = () => {
         <div className="space-y-3">
           <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
             <div className="space-y-2">
-              <label className="text-sm font-medium">From</label>
+              <label className="text-sm font-medium">
+                {t("finance.currency.from")}
+              </label>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
                 <SelectTrigger className="h-11">
                   <SelectValue />
@@ -171,15 +183,17 @@ const CurrencyConverter = () => {
               variant="outline"
               onClick={onSwap}
               disabled={isLoading}
-              title="Swap currencies"
-              aria-label="Swap currencies"
+              title={t("finance.currency.swap")}
+              aria-label={t("finance.currency.swap")}
               className="mb-1 h-11 w-11 rounded-full bg-background/70 p-0 hover:bg-background transition"
             >
               <ArrowLeftRight className="h-5 w-5" />
             </Button>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">To</label>
+              <label className="text-sm font-medium">
+                {t("finance.currency.to")}
+              </label>
               <Select value={toCurrency} onValueChange={setToCurrency}>
                 <SelectTrigger className="h-11">
                   <SelectValue />
@@ -199,7 +213,9 @@ const CurrencyConverter = () => {
         <div className="md:col-span-2">
           <div className="rounded-xl border bg-background/30 backdrop-blur p-4">
             <div className="text-sm text-muted-foreground">
-              {isLoading || isFetching ? "Calculating…" : "Result"}
+              {isLoading || isFetching
+                ? t("finance.currency.calculating")
+                : t("finance.currency.result")}
             </div>
 
             <div className="mt-1 text-xl font-semibold">
@@ -207,16 +223,20 @@ const CurrencyConverter = () => {
                 "—"
               ) : (
                 <>
-                  {formatMoney(amountNum)} {fromCurrency} ={" "}
-                  {formatMoney(converted)} {toCurrency}
+                  {formatMoney(amountNum, 2, i18n.language)} {fromCurrency} ={" "}
+                  {formatMoney(converted, 2, i18n.language)} {toCurrency}
                 </>
               )}
             </div>
 
             <div className="mt-2 text-xs text-muted-foreground">
               {rate
-                ? `1 ${fromCurrency} = ${rate} ${toCurrency}`
-                : "Rate unavailable"}
+                ? t("finance.currency.liveRate", {
+                    from: fromCurrency,
+                    rate: formatMoney(rate, 4, i18n.language),
+                    to: toCurrency,
+                  })
+                : t("finance.currency.rateUnavailable")}
             </div>
           </div>
         </div>

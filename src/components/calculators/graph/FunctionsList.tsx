@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface GraphFunction {
   expression: string;
@@ -25,8 +26,8 @@ interface FunctionsListProps {
   handleUpdateColor: (index: number, color: string) => void;
   handleUpdateLineWidth: (index: number, lineWidth: number) => void;
   handleToggleVisibility: (index: number) => void;
-  colors: { name: string; value: string }[];
-  lineWidths: { name: string; value: number }[];
+  colors: { labelKey: string; value: string }[];
+  lineWidths: { labelKey: string; value: number }[];
   showGrid: boolean;
   setShowGrid: (value: boolean) => void;
   showAxis: boolean;
@@ -49,15 +50,21 @@ const FunctionsList = ({
   showAxis,
   setShowAxis,
 }: FunctionsListProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium">Show grid</label>
+          <label className="text-sm font-medium">
+            {t("graph.controls.showGrid")}
+          </label>
           <Switch checked={showGrid} onCheckedChange={setShowGrid} />
         </div>
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium">Show axis</label>
+          <label className="text-sm font-medium">
+            {t("graph.controls.showAxis")}
+          </label>
           <Switch checked={showAxis} onCheckedChange={setShowAxis} />
         </div>
       </div>
@@ -66,11 +73,11 @@ const FunctionsList = ({
         <Input
           value={currentExpression}
           onChange={(e) => setCurrentExpression(e.target.value)}
-          placeholder="Example: sin(x) or x^2 + 2*x + 1"
+          placeholder={t("graph.controls.expressionPlaceholder")}
           className="flex-1"
         />
         <Button onClick={handleAddFunction} className="w-full">
-          Add graph
+          {t("graph.controls.addGraph")}
         </Button>
       </div>
 
@@ -92,6 +99,16 @@ const FunctionsList = ({
                 size="icon"
                 onClick={() => handleToggleVisibility(index)}
                 className="ml-2"
+                aria-label={
+                  func.visible
+                    ? t("graph.controls.hideGraph")
+                    : t("graph.controls.showGraph")
+                }
+                title={
+                  func.visible
+                    ? t("graph.controls.hideGraph")
+                    : t("graph.controls.showGraph")
+                }
               >
                 {func.visible ? (
                   <Eye className="h-4 w-4" />
@@ -109,7 +126,7 @@ const FunctionsList = ({
                     className="flex-1"
                     style={{ color: func.color }}
                   >
-                    Color
+                    {t("graph.controls.color")}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -123,7 +140,7 @@ const FunctionsList = ({
                           className="h-4 w-4 rounded-full"
                           style={{ backgroundColor: color.value }}
                         />
-                        {color.name}
+                        {t(color.labelKey)}
                       </div>
                     </DropdownMenuItem>
                   ))}
@@ -133,7 +150,9 @@ const FunctionsList = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex-1">
-                    Thickness: {func.lineWidth}
+                    {t("graph.controls.thicknessValue", {
+                      value: func.lineWidth,
+                    })}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -142,7 +161,7 @@ const FunctionsList = ({
                       key={width.value}
                       onClick={() => handleUpdateLineWidth(index, width.value)}
                     >
-                      {width.name}
+                      {t(width.labelKey)}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -152,6 +171,8 @@ const FunctionsList = ({
                 variant="destructive"
                 size="icon"
                 onClick={() => handleRemoveFunction(index)}
+                aria-label={t("graph.controls.removeGraph")}
+                title={t("graph.controls.removeGraph")}
               >
                 ×
               </Button>

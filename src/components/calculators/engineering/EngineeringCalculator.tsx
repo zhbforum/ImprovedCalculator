@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { evaluate } from "mathjs";
 import type { HistoryItem, RightPanelTab } from "./types";
@@ -11,6 +12,7 @@ import { Keypad } from "./components/Keypad";
 import { RightPanel } from "./components/RightPanel";
 
 const EngineeringCalculator = () => {
+  const { t } = useTranslation();
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -70,11 +72,11 @@ const EngineeringCalculator = () => {
 
         return balancedExpression;
       } catch {
-        setResult("Error");
+        setResult(t("engineering.result.error"));
         return current;
       }
     });
-  }, [isRadians]);
+  }, [isRadians, t]);
 
   const handlePickHistory = (item: HistoryItem) => setInput(item.expression);
   const clearHistory = () => setHistory([]);

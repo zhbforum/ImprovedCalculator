@@ -1,4 +1,5 @@
 import { ArrowLeftRight, Landmark, Percent } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,6 +15,8 @@ import LoanCalculator from "@/components/calculators/finance/LoanCalculator";
 import { glassCard } from "@/lib/styles";
 
 const Finance = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -26,11 +29,10 @@ const Finance = () => {
         <div className="container mx-auto p-4 py-10">
           <div className="mb-8 max-w-3xl space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-              Finance Calculator
+              {t("finance.page.title")}
             </h1>
             <p className="text-muted-foreground">
-              Currency conversion, compound growth, and loan payments — in one
-              place.
+              {t("finance.page.description")}
             </p>
           </div>
 
@@ -42,7 +44,7 @@ const Finance = () => {
                   className="gap-2 rounded-lg data-[state=active]:bg-background/60 data-[state=active]:backdrop-blur"
                 >
                   <ArrowLeftRight className="h-4 w-4" />
-                  Currency
+                  {t("finance.tabs.currency")}
                 </TabsTrigger>
 
                 <TabsTrigger
@@ -50,7 +52,7 @@ const Finance = () => {
                   className="gap-2 rounded-lg data-[state=active]:bg-background/60 data-[state=active]:backdrop-blur"
                 >
                   <Percent className="h-4 w-4" />
-                  Compound
+                  {t("finance.tabs.compound")}
                 </TabsTrigger>
 
                 <TabsTrigger
@@ -58,7 +60,7 @@ const Finance = () => {
                   className="gap-2 rounded-lg data-[state=active]:bg-background/60 data-[state=active]:backdrop-blur"
                 >
                   <Landmark className="h-4 w-4" />
-                  Loan
+                  {t("finance.tabs.loan")}
                 </TabsTrigger>
               </TabsList>
 
@@ -86,21 +88,27 @@ const Finance = () => {
 
           <div className="mt-6 grid gap-3 md:grid-cols-3">
             <Card className={`${glassCard} p-4`}>
-              <div className="text-sm font-medium">Currency</div>
+              <div className="text-sm font-medium">
+                {t("finance.cards.currency.title")}
+              </div>
               <div className="text-sm text-muted-foreground mt-1">
-                Rates refresh automatically (every 60s).
+                {t("finance.cards.currency.description")}
               </div>
             </Card>
             <Card className={`${glassCard} p-4`}>
-              <div className="text-sm font-medium">Compound</div>
+              <div className="text-sm font-medium">
+                {t("finance.cards.compound.title")}
+              </div>
               <div className="text-sm text-muted-foreground mt-1">
-                Compound supports monthly contribution.
+                {t("finance.cards.compound.description")}
               </div>
             </Card>
             <Card className={`${glassCard} p-4`}>
-              <div className="text-sm font-medium">Loan</div>
+              <div className="text-sm font-medium">
+                {t("finance.cards.loan.title")}
+              </div>
               <div className="text-sm text-muted-foreground mt-1">
-                Loan shows overpayment and full schedule.
+                {t("finance.cards.loan.description")}
               </div>
             </Card>
           </div>
